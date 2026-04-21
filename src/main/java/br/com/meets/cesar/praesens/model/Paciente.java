@@ -14,10 +14,22 @@ public class Paciente {
 
     @Column(unique = true, nullable = false)
     private String cpf;
-    
+
     private String nome;
     private int totalAgendamentos;
     private int totalFaltas;
+
+    @Column (name = "score_honra")
+    private Integer scoreHonra = 0;
+
+    //getters e setters
+    public int getScoreHonra(){
+        return scoreHonra == null ? 0 : scoreHonra;
+    } //ter certeza que o ScoreHonra não é null *isso tava dando erro
+
+    public void setScoreHonra(int scoreHonra){
+        this.scoreHonra = scoreHonra;
+    }
 
     public double getScoreRisco() {
         if (totalAgendamentos == 1 && totalFaltas == 0) return 10.0; //taxa de falta para novos clientes

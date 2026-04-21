@@ -1,5 +1,6 @@
 package br.com.meets.cesar.praesens.controller;
 
+import br.com.meets.cesar.praesens.model.Agendamento;
 import br.com.meets.cesar.praesens.model.Paciente;
 import br.com.meets.cesar.praesens.service.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,18 @@ public class AgendamentoController {
     private AgendamentoService service;
 
     @GetMapping("/agendar")
-    public String agendar(@RequestParam String cpf, @RequestParam String nome) {
-        return service.realizarAgendamento(cpf, nome);
+    public String agendar(@RequestParam String cpf, @RequestParam String nome, @RequestParam int leadTime, @RequestParam String tipo, @RequestParam Double valor) {
+        return service.realizarAgendamento(cpf, nome,leadTime,tipo,valor);
     }
 
     @GetMapping("/registrar-falta")
     public String falta(@RequestParam String cpf) {
         return service.registrarFalta(cpf);
+    }
+
+    @GetMapping("/lista-agendamentos")
+    public List<Agendamento> listarTodos() {
+        return service.listarTodosAgendamentos();
     }
 
     //mostra a lista de risco

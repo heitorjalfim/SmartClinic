@@ -14,6 +14,13 @@
     <h2>Novo Agendamento</h2>
     <input type="text" id="nome" placeholder="Nome do Paciente">
     <input type="text" id="cpf" placeholder="CPF (apenas números)">
+    <input type="number" id="leadTime" placeholder="Dias de antecedência (Lead Time)">
+    <select id="tipo">
+        <option value="Estético">Estético</option>
+        <option value="Cirúrgico">Cirúrgico</option>
+        <option value="Manutenção">Manutenção</option>
+    </select>
+    <input type="number" id="valor" placeholder="Valor do Procedimento (R$)">
     <button onclick="enviarAgendamento()">Agendar</button>
 
     <div id="resultado"></div>
@@ -25,11 +32,13 @@
         async function enviarAgendamento() {
             const nome = document.getElementById('nome').value;
             const cpf = document.getElementById('cpf').value;
+            const leadTime = document.getElementById('leadTime').value;
+            const tipo = document.getElementById('tipo').value;
+            const valor = document.getElementById('valor').value;
             const resDiv = document.getElementById('resultado');
 
             try {
-                // Chama a URL que você testou antes, mas via código
-                const response = await fetch(`/api/agendar?cpf=${cpf}&nome=${nome}`);
+                const response = await fetch(`/api/agendar?cpf=${cpf}&nome=${nome}&leadTime=${leadTime}&tipo=${tipo}&valor=${valor}`);
                 const texto = await response.text();
                 
                 resDiv.style.display = 'block';
