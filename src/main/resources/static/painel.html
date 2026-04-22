@@ -15,8 +15,7 @@
 </head>
 <body>
     <a href="/" class="btn-voltar">← Voltar para Agendamento</a>
-    <h2>Painel de Controle de Faltas</h2>
-    
+    <h2>Painel de Pacientes (Geral)</h2>
     <table>
         <thead>
             <tr>
@@ -24,43 +23,87 @@
                 <th>CPF</th>
                 <th>Agendamentos</th>
                 <th>Faltas</th>
-                <th>Risco de Falta</th>
+                <th>Score Honra</th>
+                <th>Risco Médio</th>
                 <th>Ações</th>
             </tr>
         </thead>
-        <tbody id="tabela-corpo">
-            </tbody>
+        <tbody id="tabela-pacientes"></tbody>
+    </table>
+
+    <hr>
+
+    <h2>Próximos Agendamentos (Detalhados)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>CPF</th>
+                <th>Procedimento</th>
+                <th>Valor</th>
+                <th>Lead Time</th>
+                <th>Risco Atual</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-agendamentos"></tbody>
     </table>
 
     <script>
         // Função para carregar a lista de pacientes
         async function carregarPainel() {
-            const response = await fetch('/api/painel');
-            const pacientes = await response.json();
-            const corpo = document.getElementById('tabela-corpo');
-            corpo.innerHTML = "";
+            try {
+                // 1. Busca e carrega a tabela de Pacientes
+                const resPacientes = await fetch('/api/painel');
+                const pacientes = await resPacientes.json();
+                const corpoPacientes = document.getElementById('tabela-pacientes');
+                corpoPacientes.innerHTML = "";
 
-            pacientes.forEach(p => {
-                // Cálculo do risco (0-100)
-                let risco = 10.0;
-                if (p.totalAgendamentos > 0) {
-                    risco = (p.totalFaltas / p.totalAgendamentos) * 100;
-                }
+                pacientes.forEach(p => {
+                    let risco = 10.0;
+                    if (p.totalAgendamentos > 1) {
+                        risco = (p.totalFaltas / p.totalAgendamentos) * 100;
+                    }
+                    
+                    corpoPacientes.innerHTML += `
+                        <tr>
+                            <td>${p.nome}</td>
+                            <td>${p.cpf}</td>
+                            <td>${p.totalAgendamentos}</td>
+                            <td>${p.totalFaltas}</td>
+                            <td>${p.scoreHonra || 0}</td>
+                            <td><strong>${risco.toFixed(2)}%</strong></td>
+                            <td>
+                                <button class="btn-falta" onclick="registrarFalta('${p.cpf}')">Registrar Falta</button>
+                            </td>
+                        </tr>
+                    `;
+                });
 
-                const linha = `
-                    <tr>
-                        <td>${p.nome}</td>
-                        <td>${p.cpf}</td>
-                        <td>${p.totalAgendamentos}</td>
-                        <td>${p.totalFaltas}</td>
-                        <td><strong>${risco.toFixed(2)}%</strong></td>
-                        <td>
-                            <button class="btn-falta" onclick="registrarFalta('${p.cpf}')">Registrar Falta</button>
-                        </td>
-                    </tr>
-                `;
-                corpo.innerHTML += linha;
-            });
+                // 2. Busca e carrega a tabela de Agendamentos
+                const resAgendamentos = await fetch('/api/lista-agendamentos');
+                const agendamentos = await resAgendamentos.json();
+                const corpoAgendamentos = document.getElementById('tabela-agendamentos');
+                corpoAgendamentos.innerHTML = "";
+
+                agendamentos.forEach(a => {
+                    corpoAgendamentos.innerHTML += `
+                        <tr>
+                            <td>${a.paciente.nome}</td>
+                            <td>${a.paciente.cpf}</td>
+                            <td>${a.tipoProcedimento}</td>
+                            <td>R$ ${a.valorProcedimento.toFixed(2)}</td>
+                            <td>${a.leadTime} dias</td>
+                            <td><strong>${a.scoreRisco.toFixed(2)}%</strong></td>
+                            <td>
+                                <button class="btn-falta" onclick="registrarFalta('${a.paciente.cpf}')">Registrar Falta</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error("Erro ao carregar dados:", error);
+            }
         }
 
         // Função que chama a API para aumentar as faltas
