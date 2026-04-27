@@ -1,60 +1,59 @@
 package br.com.meets.cesar.praesens.service;
 
-import br.com.meets.cesar.praesens.model.Agendamento;
-import br.com.meets.cesar.praesens.model.Paciente;
+import br.com.meets.cesar.praesens.model.AgendamentoModel;
+import br.com.meets.cesar.praesens.model.PacienteModel;
 import br.com.meets.cesar.praesens.repository.AgendamentoRepository;
 import br.com.meets.cesar.praesens.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class AgendamentoService {
 
     @Autowired
-    private PacienteRepository repository;
-    
-    @Autowired
     private AgendamentoRepository agendamentoRepository;
 
-    public String realizarAgendamento(String cpf, String nome, int leadTime, String tipo, double valor) {
-        //salva no repositorio de pacientes
-        Paciente paciente = repository.findByCpf(cpf)
-            .orElseGet(() -> {
-                Paciente novo = new Paciente(null, cpf, nome, 0, 0, 0);
-                novo.setScoreHonra(0); //ter certeza que o scoreHonra não é null *estava dando erro
-                return repository.save(novo);
-            });
-        paciente.setTotalAgendamentos(paciente.getTotalAgendamentos() + 1);
-        repository.save(paciente); // Salva ou Atualiza automaticamente
+    @Autowired
+    private PacienteRepository pacienteRepository;
+
+    private static final int LIMITE_POR_HORARIO = 5;
+
+    public AgendamentoModel salvar(AgendamentoModel agendamento) {
+        long totalNoMesmoHorario = agendamentoRepository.countByDataHora(agendamento.getDataHora());
         
-        //salva no repositorio de agendamentos
-        Agendamento agendamento = new Agendamento();
+        if (totalNoMesmoHorario >= LIMITE_POR_HORARIO) {
+            throw new RuntimeException("Overbooking detectado: Limite de " + LIMITE_POR_HORARIO + " pacientes atingido para este horário.");
+        }
+
+        PacienteModel paciente = agendamento.getPaciente();
+        if (paciente.getID_Paciente() == null) {
+            paciente = pacienteRepository.save(paciente);
+        }
+
         agendamento.setPaciente(paciente);
-        agendamento.setLeadTime(leadTime);
-        agendamento.setTipoProcedimento(tipo);
-        agendamento.setValorProcedimento(valor);
-        agendamento.setScoreRisco(paciente.getScoreRisco());
-
-        agendamentoRepository.save(agendamento); // Salva ou Atualiza automaticamente
-
-        return "Agendado! | Procedimento: "+tipo+" | Valor: R$ "+valor+" | Risco: "+ String.format("%.2f", paciente.getScoreRisco()) + "%";
+        return agendamentoRepository.save(agendamento);
     }
 
-    public String registrarFalta(String cpf) {
-        return repository.findByCpf(cpf).map(paciente -> {
-            paciente.setTotalFaltas(paciente.getTotalFaltas() + 1);
-            repository.save(paciente);
-            return "Falta registrada para " + paciente.getNome() + ". Novo risco: " 
-                    + String.format("%.2f", paciente.getScoreRisco()) + "%";
-        }).orElse("Paciente não encontrado.");
+    public void registrarFalta(Long idAgendamento) {
+        agendamentoRepository.findById(idAgendamento).ifPresent(agendamento -> {
+            PacienteModel paciente = agendamento.getPaciente();
+
+            paciente.setHistorico_NoShow(paciente.getHistorico_NoShow() + 1);
+         
+            int honraAtual = paciente.getScore_Honra();
+            if (honraAtual >= 10) {
+                paciente.setScore_Honra(honraAtual - 10);
+            } else {
+                paciente.setScore_Honra(0);
+            }
+
+            pacienteRepository.save(paciente);
+        });
     }
 
-    public List<Agendamento> listarTodosAgendamentos() {
+    public List<AgendamentoModel> listarTodos() {
         return agendamentoRepository.findAll();
-    }
-
-    public List<Paciente> obterListaPorRisco() {
-        return repository.findAll(); // O banco retorna a lista atualizada
     }
 }

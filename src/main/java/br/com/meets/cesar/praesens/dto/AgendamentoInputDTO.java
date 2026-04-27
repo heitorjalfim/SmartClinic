@@ -1,13 +1,11 @@
 package br.com.meets.cesar.praesens.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime; 
+import lombok.Data;
+import java.time.LocalDateTime;
 
-public record AgendamentoInputDTO(
-    Long pacienteId,
-    LocalDate data,
-    LocalTime hora,
-    Integer leadTime,
-    String tipoProcedimento,
-    Double valorProcedimento
-) {}
+@Data
+public class AgendamentoInputDTO {
+    private String cpfPaciente;   
+    private String localidade;    
+    private LocalDateTime dataHora;
+}
