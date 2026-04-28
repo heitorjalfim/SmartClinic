@@ -38,15 +38,28 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ---
 
-## 📦 Entrega 3 - Arquitetura Isolada e Processamento Comportamental
- * ✅ *História de Usuário 10: Sistema de honra*
-   * *O que foi feito:* Construção de uma variável que calcula a honra de um paciente, com base no historico de NO-SHOW.
-   * *Valor gerado:* Garante que a clínica tenha uma visão geral do paciente que irá ser atendido e facilita o agendamento de consultas, com filas prioritárias para pacientes com honra alta.
- * ✅ *História de Usuário 8: Análise Comportamental e LGPD*
-   * *O que foi feito:* Implementação da lógica de processamento do histórico de no-show dos últimos 12 meses utilizando identificadores anônimos para classificação de risco.
-   * *Valor gerado:* Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo reavalie o perfil do paciente a cada novo evento para refletir o comportamento mais recente.
-   * 
- * 🎥 *SCREENCAST:* [Screencast no YouTube](https://youtu.be/q1ldCyb6_CQ?si=RB8ScZwr-eO7SpBS)
+
+## 📦 Entrega 3 - Processamento Comportamental e Governança de Dados
+
+Nesta etapa, o foco foi a implementação da lógica de negócio para gestão de assiduidade e o sistema de reputação (honra) do paciente, garantindo a conformidade com a LGPD.
+
+### 📝 Histórias de Usuário desta Entrega:
+
+* ✅ **História de Usuário 8: Análise Comportamental e LGPD**
+    * **O que foi feito:** Implementação do endpoint de registro de faltas (`@PatchMapping("/{id}/falta")`) utilizando identificadores anônimos para o processamento de dados.
+    * [cite_start]**Valor gerado:** Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo de IA futuro processe o histórico de *no-show* sem expor a identidade real do paciente[cite: 162].
+
+* ✅ **História de Usuário 10: Sistema de Honra Dinâmica**
+    * **O que foi feito:** Desenvolvimento da lógica de backend que integra o registro de faltas ao sistema de pontuação de "honra" do paciente.
+    * [cite_start]**Valor gerado:** Fornece à clínica uma métrica clara para priorização de agendamentos e gestão de listas de espera, recompensando pacientes assíduos e identificando perfis de risco[cite: 162].
+
+* 🎥 **SCREENCAST:** [Screencast no YouTube](https://youtu.be/q1ldCyb6_CQ?si=RB8ScZwr-eO7SpBS)
+
+**ISSUES:**
+<img width="977" height="107" alt="image" src="https://github.com/user-attachments/assets/088afd83-cdaf-4fa0-ada1-f3df16d79b68" />
+
+
+---
 
 
 ## 🟣 Persistência de Dados (H2 Database)
