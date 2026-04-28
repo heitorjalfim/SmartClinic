@@ -38,6 +38,16 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ---
 
+## 📦 Entrega 3 - Arquitetura Isolada e Processamento Comportamental
+ * ✅ *História de Usuário 7: Arquitetura em Microsserviço (Docker)*
+   * *O que foi feito:* Construção do motor de cálculo da inteligência artificial como um microsserviço isolado em container Docker, garantindo independência técnica total.
+   * *Valor gerado:* Assegura a portabilidade e escalabilidade da solução, permitindo que o motor seja "plugado" em diferentes sistemas de gestão via API de forma independente da plataforma principal.
+ * ✅ *História de Usuário 8: Análise Comportamental e LGPD*
+   * *O que foi feito:* Implementação da lógica de processamento do histórico de no-show dos últimos 12 meses utilizando identificadores anônimos para classificação de risco.
+   * *Valor gerado:* Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo reavalie o perfil do paciente a cada novo evento para refletir o comportamento mais recente.
+ * 🎥 *SCREENCAST:* [Screencast no YouTube](https://youtu.be/q1ldCyb6_CQ?si=RB8ScZwr-eO7SpBS)
+
+
 ## 🟣 Persistência de Dados (H2 Database)
 
 *Para esta entrega, utilizamos o banco de dados H2, que opera em modo in-memory.*
