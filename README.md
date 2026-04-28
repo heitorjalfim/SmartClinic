@@ -27,8 +27,8 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
     * **Valor gerado:** Garante que as informações do sistema sejam salvas e organizadas de forma correta no banco de dados.
 
 * ✅ **História de Usuário 3: Documentação Interativa da API**
-    * **O que foi feito:** Implementação e configuração do Swagger UI (OpenAPI) no ecossistema Spring Boot.
-    * **Valor gerado:** Facilita o teste dos endpoints e permite que a equipe visualize todas as rotas disponíveis sem precisar ler o código-fonte.
+    * O que foi feito:** Implementação e configuração do Swagger UI (OpenAPI) no ecossistema Spring Boot.
+    * Valor gerado:** Facilita o teste dos endpoints e permite que a equipe visualize todas as rotas disponíveis sem precisar ler o código-fonte.
     
 * 🎥 **SCREENCAST:** [Screencast no YouTube](https://youtu.be/mi5y0C0S0eg)
 
