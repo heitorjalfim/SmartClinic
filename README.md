@@ -47,11 +47,11 @@ Nesta etapa, o foco foi a implementação da lógica de negócio para gestão de
 
 * ✅ **História de Usuário 8: Análise Comportamental e LGPD**
     * **O que foi feito:** Implementação do endpoint de registro de faltas (`@PatchMapping("/{id}/falta")`) utilizando identificadores anônimos para o processamento de dados.
-    * [cite_start]**Valor gerado:** Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo de IA futuro processe o histórico de *no-show* sem expor a identidade real do paciente[cite: 162].
+    * **Valor gerado:** Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo de IA futuro processe o histórico de *no-show* sem expor a identidade real do paciente[cite: 162].
 
 * ✅ **História de Usuário 10: Sistema de Honra Dinâmica**
     * **O que foi feito:** Desenvolvimento da lógica de backend que integra o registro de faltas ao sistema de pontuação de "honra" do paciente.
-    * [cite_start]**Valor gerado:** Fornece à clínica uma métrica clara para priorização de agendamentos e gestão de listas de espera, recompensando pacientes assíduos e identificando perfis de risco[cite: 162].
+    * **Valor gerado:** Fornece à clínica uma métrica clara para priorização de agendamentos e gestão de listas de espera, recompensando pacientes assíduos e identificando perfis de risco[cite: 162].
 
 * 🎥 **SCREENCAST:** [Screencast no YouTube](https://youtu.be/q1ldCyb6_CQ?si=RB8ScZwr-eO7SpBS)
 
