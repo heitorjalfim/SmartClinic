@@ -39,9 +39,9 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 ---
 
 ## 📦 Entrega 3 - Arquitetura Isolada e Processamento Comportamental
- * ✅ *História de Usuário 7: Arquitetura em Microsserviço (Docker)*
-   * *O que foi feito:* Construção do motor de cálculo da inteligência artificial como um microsserviço isolado em container Docker, garantindo independência técnica total.
-   * *Valor gerado:* Assegura a portabilidade e escalabilidade da solução, permitindo que o motor seja "plugado" em diferentes sistemas de gestão via API de forma independente da plataforma principal.
+ * ✅ *História de Usuário 10: Sistema de honra*
+   * *O que foi feito:* Construção de uma variável que calcula a honra de um paciente, com base no historico de NO-SHOW.
+   * *Valor gerado:* Garante que a clínica tenha uma visão geral do paciente que irá ser atendido e facilita o agendamento de consultas, com filas prioritárias para pacientes com honra alta.
  * ✅ *História de Usuário 8: Análise Comportamental e LGPD*
    * *O que foi feito:* Implementação da lógica de processamento do histórico de no-show dos últimos 12 meses utilizando identificadores anônimos para classificação de risco.
    * *Valor gerado:* Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo reavalie o perfil do paciente a cada novo evento para refletir o comportamento mais recente.
