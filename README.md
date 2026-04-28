@@ -45,6 +45,9 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
  * ✅ *História de Usuário 8: Análise Comportamental e LGPD*
    * *O que foi feito:* Implementação da lógica de processamento do histórico de no-show dos últimos 12 meses utilizando identificadores anônimos para classificação de risco.
    * *Valor gerado:* Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo reavalie o perfil do paciente a cada novo evento para refletir o comportamento mais recente.
+ * ✅ *História de Usuário 11: Governança, LGPD e Dados Sintéticos*
+   * *O que foi feito:* Estruturação do banco de dados de desenvolvimento utilizando exclusivamente identificadores numéricos e injeção de dados sintéticos (fictícios) para validação das regras de negócio.
+   * *Valor gerado:* Garante proteção absoluta da privacidade desde a fase de desenvolvimento, assegurando que o projeto opere em total conformidade com a Lei Geral de Proteção de Dados (LGPD) e as exigências da "Carta de Navegação".
  * 🎥 *SCREENCAST:* [Screencast no YouTube](https://youtu.be/q1ldCyb6_CQ?si=RB8ScZwr-eO7SpBS)
 
 
