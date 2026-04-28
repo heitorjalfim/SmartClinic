@@ -39,25 +39,29 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 ---
 
 
-## 📦 Entrega 3 - Processamento Comportamental e Governança de Dados
+# Entrega 3 
 
-Nesta etapa, o foco foi a implementação da lógica de negócio para gestão de assiduidade e o sistema de reputação (honra) do paciente, garantindo a conformidade com a LGPD.
+## 📝 Histórias de Usuário Implementadas
 
-### 📝 Histórias de Usuário desta Entrega:
+### ✅ História de Usuário 7: Arquitetura de Camadas e Regras de Negócio
+* **O que foi feito:** Organização do projeto utilizando o padrão de camadas (Controller, Service e Repository). O `AgendamentoController` gerencia as requisições, enquanto o `AgendamentoService` isola a lógica de negócio para o processamento de faltas.
+* **Valor gerado:** Garante um código limpo, fácil de manter e escalável, separando a exposição da API da lógica de processamento interna.
 
-* ✅ **História de Usuário 8: Análise Comportamental e LGPD**
-    * **O que foi feito:** Implementação do endpoint de registro de faltas (`@PatchMapping("/{id}/falta")`) utilizando identificadores anônimos para o processamento de dados.
-    * **Valor gerado:** Garante a proteção de dados sensíveis em conformidade com a LGPD, permitindo que o modelo de IA futuro processe o histórico de *no-show* sem expor a identidade real do paciente.
+### ✅ História de Usuário 8: Registro de Absenteísmo (Faltas) e LGPD
+* **O que foi feito:** Implementação do endpoint `PATCH /{id}/falta` para registro de faltas de pacientes. O sistema foi estruturado para focar em identificadores anônimos, garantindo a privacidade dos dados sensíveis conforme as diretrizes da LGPD.
+* **Valor gerado:** Permite o controle de presença necessário para alimentar o modelo de inteligência preditiva sem expor dados pessoais dos pacientes.
 
-* ✅ **História de Usuário 10: Sistema de Honra Dinâmica**
-    * **O que foi feito:** Desenvolvimento da lógica de backend que integra o registro de faltas ao sistema de pontuação de "honra" do paciente.
-    * **Valor gerado:** Fornece à clínica uma métrica clara para priorização de agendamentos e gestão de listas de espera, recompensando pacientes assíduos e identificando perfis de risco.
+---
 
-* 🎥 **SCREENCAST:** [Screencast no YouTube](https://youtu.be/q1ldCyb6_CQ?si=RB8ScZwr-eO7SpBS)
+## 🛠️ Issues do Projeto 
+<img width="980" height="101" alt="image" src="https://github.com/user-attachments/assets/f4b7bfd0-0b12-4161-a6f8-680399f56c9b" />
 
-**ISSUES:**
-<img width="977" height="107" alt="image" src="https://github.com/user-attachments/assets/088afd83-cdaf-4fa0-ada1-f3df16d79b68" />
 
+---
+
+## 🎥 Screencast (Demonstração)
+* **Link do Vídeo:** (https://youtu.be/q1ldCyb6_CQ?si=RB8ScZwr-eO7SpBS)
+* *Nota: O vídeo demonstra a estrutura do projeto e os endpoints mapeados no Swagger, validando a integração entre Controller e Service.*
 
 ---
 
