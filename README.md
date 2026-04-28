@@ -34,7 +34,8 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
     ISSUES:
     
-    * ![Print das Issues](./issues.png.png)
+    <img width="981" height="105" alt="image" src="https://github.com/user-attachments/assets/0a6cf505-362a-4918-b820-e5b24e67e246" />
+
 
 ---
 
