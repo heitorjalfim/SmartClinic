@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,9 +23,16 @@ public class AgendamentoModel {
     @ManyToOne
     @Setter private PacienteModel paciente;
 
-    @Setter private LocalDateTime dataHora;
-    @Setter private int distancia;
+    @Column(nullable = true)
+    @Setter private LocalDateTime dataHora = LocalDateTime.now();
+
+    @Column(nullable = true)
+    @Setter private Integer distancia = 0;
+
     @Setter private String Tipo_Procedimento;
-    @Setter private double Valor_Procedimento;
-    @Setter private double Probabilidade_Falta;
+    @Setter private Double Valor_Procedimento;
+    @Setter private String status;
+
+    @Column(nullable = true)
+    @Setter private Double Probabilidade_Falta = 0.0;
 }

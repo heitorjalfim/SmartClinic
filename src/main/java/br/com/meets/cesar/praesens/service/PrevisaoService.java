@@ -2,6 +2,7 @@ package br.com.meets.cesar.praesens.service;
 
 import br.com.meets.cesar.praesens.dto.AgendamentoInputDTO;
 import br.com.meets.cesar.praesens.dto.ScoreOutputDTO;
+import br.com.meets.cesar.praesens.model.AgendamentoModel;
 import br.com.meets.cesar.praesens.model.PacienteModel;
 import br.com.meets.cesar.praesens.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,45 +12,40 @@ import org.springframework.stereotype.Service;
 public class PrevisaoService {
 
     @Autowired
+    private IAService iaService;
+
+    @Autowired
     private PacienteRepository pacienteRepository;
 
-    @Autowired
-    private ExternalApiService externalApiService; // Para Clima e Trânsito
+    public ScoreOutputDTO calcularRisco(AgendamentoInputDTO dto) {
 
-    @Autowired
-    private GeminiService geminiService; // Para a análise do Gemini
+        PacienteModel paciente = pacienteRepository.findByCpf(dto.getCpfPaciente())
+                .orElseThrow(() -> new RuntimeException("Paciente não encontrado."));
 
-    public ScoreOutputDTO calcularRisco(AgendamentoInputDTO dados) {
+        AgendamentoModel modelParaIA = new AgendamentoModel();
         
-        // 1. Busca o paciente no banco pelo CPF com tratamento de erro (Melhoria de Robustez)
-        PacienteModel paciente = pacienteRepository.findByCpf(dados.getCpfPaciente())
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado com o CPF: " + dados.getCpfPaciente()));
+        modelParaIA.setPaciente(paciente);
+        modelParaIA.setDataHora(dto.getDataHora()); 
+        modelParaIA.setValor_Procedimento(dto.getValor_procedimento().doubleValue());
+        modelParaIA.setTipo_Procedimento(dto.getTipo_procedimento());
 
-        // 2. Consulta as APIs externas
-        String condicaoClimatica = externalApiService.getClima(dados.getLocalidade());
-        String condicaoTransito = externalApiService.getTransito(dados.getLocalidade());
+        modelParaIA.setDistancia(0); 
 
-        // 3. Verifica se alguma API está offline (Pedido do monitor)
-        boolean apiOffline = condicaoClimatica.contains("Indisponível") || 
-                             condicaoTransito.contains("Indisponível");
+        double probabilidade = iaService.preverRisco(modelParaIA);
 
-        // 4. Chama o Gemini enviando todos os contextos coletados
-        ScoreOutputDTO resultadoFinal = geminiService.analisarRisco(
-            paciente, 
-            dados, 
-            condicaoClimatica, 
-            condicaoTransito
-        );
+        modelParaIA.setProbabilidade_Falta(probabilidade);
 
-        // 5. Adiciona o alerta visual na justificativa se as APIs falharam
-        if (apiOffline) {
-            String aviso = "[ALERTA: Fontes externas offline] ";
-            resultadoFinal.setJustificativa(aviso + resultadoFinal.getJustificativa());
-        }
+        ScoreOutputDTO resultado = new ScoreOutputDTO();
+        resultado.setProbabilidadeFalta(probabilidade * 100);
+        resultado.setNivelRisco(definirStatusRisco(probabilidade));
+        
+        return resultado;
+    }
 
-        // 6. Garante que o DTO de saída mostre ao usuário qual era a condição climática usada
-        resultadoFinal.setCondicaoClimatica(condicaoClimatica);
-
-        return resultadoFinal;
+    private String definirStatusRisco(double p) {
+        if (p > 0.8) return "CRÍTICO";
+        if (p > 0.5) return "ALTO";
+        if (p > 0.2) return "MÉDIO";
+        return "BAIXO";
     }
 }

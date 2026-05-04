@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
-
-
 @Entity
 @Getter
 @AllArgsConstructor
@@ -16,11 +14,19 @@ public class PacienteModel {
     private Long ID_Paciente;
 
     @Email
+    @Column(nullable = true)
     @Setter private String email;
 
     //criar um tipo pra cpf
     @Setter private String cpf;
     @Setter private String nome;
-    @Setter private int Historico_NoShow;
-    @Setter private int Score_Honra;
+
+    @Column(name = "historico_no_show", nullable = false)
+    @Setter private Integer Historico_NoShow = 0;
+
+    @Column(name = "total_agendamentos", nullable = false)
+    @Setter private Integer totalAgendamentos = 0;
+
+    @Column(name = "score_honra", nullable = false)
+    @Setter private Integer Score_Honra = 100;
 }

@@ -27,12 +27,20 @@ public class AgendamentoService {
             throw new RuntimeException("Overbooking detectado: Limite de " + LIMITE_POR_HORARIO + " pacientes atingido para este horário.");
         }
 
-        PacienteModel paciente = agendamento.getPaciente();
-        if (paciente.getID_Paciente() == null) {
-            paciente = pacienteRepository.save(paciente);
-        }
+        PacienteModel pacienteEnviado = agendamento.getPaciente();
 
-        agendamento.setPaciente(paciente);
+        PacienteModel pacienteFinal = pacienteRepository.findByCpf(pacienteEnviado.getCpf())
+            .orElseGet(() -> {
+
+                PacienteModel novo = new PacienteModel();
+                novo.setNome(pacienteEnviado.getNome());
+                novo.setCpf(pacienteEnviado.getCpf());
+                novo.setTotalAgendamentos(pacienteEnviado.getTotalAgendamentos() + 1);
+
+                return pacienteRepository.save(novo);
+            });
+
+        agendamento.setPaciente(pacienteFinal);
         return agendamentoRepository.save(agendamento);
     }
 

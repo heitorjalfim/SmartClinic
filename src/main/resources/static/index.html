@@ -30,21 +30,32 @@
 
     <script>
         async function enviarAgendamento() {
-            const nome = document.getElementById('nome').value;
-            const cpf = document.getElementById('cpf').value;
-            const leadTime = document.getElementById('leadTime').value;
-            const tipo = document.getElementById('tipo').value;
-            const valor = document.getElementById('valor').value;
-            const resDiv = document.getElementById('resultado');
+            const dados = {
+                paciente: {
+                    nome: document.getElementById('nome').value,
+                    cpf: document.getElementById('cpf').value
+                },
+                leadTime: parseInt(document.getElementById('leadTime').value),
+                tipoProcedimento: document.getElementById('tipo').value,
+                valor: parseFloat(document.getElementById('valor').value),
+                dataHora: new Date().toISOString() // O Postgres precisa de uma data válida
+            };
 
             try {
-                const response = await fetch(`/api/agendar?cpf=${cpf}&nome=${nome}&leadTime=${leadTime}&tipo=${tipo}&valor=${valor}`);
-                const texto = await response.text();
-                
-                resDiv.style.display = 'block';
-                resDiv.innerText = texto;
+                const response = await fetch('/api/agendamentos', {
+                    method: 'POST', // TEM DE SER POST
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (!response.ok) throw new Error("Erro no servidor");
+
+                const resultado = await response.json();
+                alert("Sucesso! Agendamento nº: " + resultado.id);
+                location.reload(); // Recarrega para limpar o form
             } catch (error) {
-                alert("Erro ao conectar com o servidor.");
+                console.error(error);
+                alert("Erro ao salvar. Verifica o console do VS Code!");
             }
         }
     </script>

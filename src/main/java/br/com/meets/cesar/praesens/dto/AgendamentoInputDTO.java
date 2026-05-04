@@ -8,4 +8,6 @@ public class AgendamentoInputDTO {
     private String cpfPaciente;   
     private String localidade;    
     private LocalDateTime dataHora;
+    private Integer valor_procedimento;
+    private String tipo_procedimento;
 }

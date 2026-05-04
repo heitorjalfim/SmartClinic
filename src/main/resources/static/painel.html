@@ -4,75 +4,95 @@
     <meta charset="UTF-8">
     <title>Painel Innovare - Gestão de Risco</title>
     <style>
-        body { font-family: sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 12px; text-align: left; }
-        th { background-color: #f8f9fa; }
-        .btn-falta { background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
+        :root {
+            --primary: #007bff;
+            --danger: #dc3545;
+            --success: #28a745;
+            --warning: #ffc107;
+            --dark: #212529;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 1100px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: left; }
+        th { background-color: #e9ecef; color: var(--dark); font-weight: 600; }
+        tr:hover { background-color: #f8f9fa; }
+        .btn-falta { background-color: var(--danger); color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; transition: 0.2s; }
         .btn-falta:hover { background-color: #a71d2a; }
-        .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; }
+        .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--primary); font-weight: bold; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.9em; font-weight: bold; }
+        .risco-baixo { background: #d4edda; color: #155724; }
+        .risco-medio { background: #fff3cd; color: #856404; }
+        .risco-alto { background: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
     <a href="/" class="btn-voltar">← Voltar para Agendamento</a>
-    <h2>Painel de Pacientes (Geral)</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Paciente</th>
-                <th>CPF</th>
-                <th>Agendamentos</th>
-                <th>Faltas</th>
-                <th>Score Honra</th>
-                <th>Risco Médio</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody id="tabela-pacientes"></tbody>
-    </table>
 
-    <hr>
+    <div class="card">
+        <h2>📊 Painel de Pacientes (Geral)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Paciente</th>
+                    <th>CPF</th>
+                    <th>Agendamentos</th>
+                    <th>Faltas</th>
+                    <th>Score Honra</th>
+                    <th>Risco Médio</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-pacientes"></tbody>
+        </table>
+    </div>
 
-    <h2>Próximos Agendamentos (Detalhados)</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Paciente</th>
-                <th>CPF</th>
-                <th>Procedimento</th>
-                <th>Valor</th>
-                <th>Lead Time</th>
-                <th>Risco Atual</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody id="tabela-agendamentos"></tbody>
-    </table>
+    <div class="card">
+        <h2>📅 Próximos Agendamentos (Detalhados)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Paciente</th>
+                    <th>CPF</th>
+                    <th>Procedimento</th>
+                    <th>Valor</th>
+                    <th>Risco Atual</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-agendamentos"></tbody>
+        </table>
+    </div>
 
     <script>
-        // Função para carregar a lista de pacientes
+        // Auxiliar para definir cor do risco
+        function getClasseRisco(valor) {
+            if (valor < 20) return 'risco-baixo';
+            if (valor < 50) return 'risco-medio';
+            return 'risco-alto';
+        }
+
         async function carregarPainel() {
             try {
-                // 1. Busca e carrega a tabela de Pacientes
+                // 1. Carrega Pacientes
                 const resPacientes = await fetch('/api/painel');
                 const pacientes = await resPacientes.json();
                 const corpoPacientes = document.getElementById('tabela-pacientes');
                 corpoPacientes.innerHTML = "";
 
                 pacientes.forEach(p => {
-                    let risco = 10.0;
-                    if (p.totalAgendamentos > 1) {
-                        risco = (p.totalFaltas / p.totalAgendamentos) * 100;
-                    }
+                    const total = p.totalAgendamentos || 1;
+                    const faltas = p.totalFaltas || 0;
+                    const risco = (faltas / total) * 100;
                     
                     corpoPacientes.innerHTML += `
                         <tr>
-                            <td>${p.nome}</td>
-                            <td>${p.cpf}</td>
-                            <td>${p.totalAgendamentos}</td>
-                            <td>${p.totalFaltas}</td>
+                            <td>${p.nome || 'N/A'}</td>
+                            <td>${p.cpf || '-'}</td>
+                            <td>${p.totalAgendamentos || 0}</td>
+                            <td>${p.totalFaltas || 0}</td>
                             <td>${p.scoreHonra || 0}</td>
-                            <td><strong>${risco.toFixed(2)}%</strong></td>
+                            <td><span class="badge ${getClasseRisco(risco)}">${risco.toFixed(1)}%</span></td>
                             <td>
                                 <button class="btn-falta" onclick="registrarFalta('${p.cpf}')">Registrar Falta</button>
                             </td>
@@ -80,42 +100,52 @@
                     `;
                 });
 
-                // 2. Busca e carrega a tabela de Agendamentos
+                // 2. Carrega Agendamentos
                 const resAgendamentos = await fetch('/api/lista-agendamentos');
                 const agendamentos = await resAgendamentos.json();
                 const corpoAgendamentos = document.getElementById('tabela-agendamentos');
                 corpoAgendamentos.innerHTML = "";
 
                 agendamentos.forEach(a => {
+                    // Proteção contra objetos nulos (Optional Chaining)
+                    const nomeP = a.paciente?.nome || "Não informado";
+                    const cpfP = a.paciente?.cpf || "-";
+                    const riscoA = a.probabilidadeFalta || 0;
+
                     corpoAgendamentos.innerHTML += `
                         <tr>
-                            <td>${a.paciente.nome}</td>
-                            <td>${a.paciente.cpf}</td>
-                            <td>${a.tipoProcedimento}</td>
-                            <td>R$ ${a.valorProcedimento.toFixed(2)}</td>
-                            <td>${a.leadTime} dias</td>
-                            <td><strong>${a.scoreRisco.toFixed(2)}%</strong></td>
+                            <td><strong>${nomeP}</strong></td>
+                            <td>${cpfP}</td>
+                            <td>${a.tipoProcedimento || 'Consulta'}</td>
+                            <td>R$ ${(a.valorProcedimento || 0).toFixed(2)}</td>
+                            <td><span class="badge ${getClasseRisco(riscoA)}">${riscoA.toFixed(1)}%</span></td>
                             <td>
-                                <button class="btn-falta" onclick="registrarFalta('${a.paciente.cpf}')">Registrar Falta</button>
+                                <button class="btn-falta" onclick="registrarFalta('${cpfP}')">Faltou</button>
                             </td>
                         </tr>
                     `;
                 });
+
             } catch (error) {
                 console.error("Erro ao carregar dados:", error);
             }
         }
 
-        // Função que chama a API para aumentar as faltas
         async function registrarFalta(cpf) {
-            if (confirm("Confirmar registro de falta para o CPF " + cpf + "?")) {
-                const response = await fetch(`/api/registrar-falta?cpf=${cpf}`);
-                const mensagem = await response.text();
-                alert(mensagem);
-                carregarPainel(); // Recarrega a tabela para mostrar o novo risco
+            if (cpf === "-" || !cpf) return alert("CPF inválido!");
+            if (confirm("Confirmar registro de falta para o CPF: " + cpf + "?")) {
+                try {
+                    const response = await fetch(`/api/registrar-falta?cpf=${cpf}`, { method: 'POST' });
+                    const mensagem = await response.text();
+                    alert(mensagem);
+                    carregarPainel(); 
+                } catch (err) {
+                    alert("Erro ao conectar com o servidor.");
+                }
             }
         }
 
+        // Inicia o painel
         carregarPainel();
     </script>
 </body>
