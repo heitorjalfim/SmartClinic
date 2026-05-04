@@ -12,12 +12,11 @@ public class PacienteModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID_Paciente;
-
+    
     @Email
     @Column(nullable = true)
     @Setter private String email;
 
-    //criar um tipo pra cpf
     @Setter private String cpf;
     @Setter private String nome;
 
