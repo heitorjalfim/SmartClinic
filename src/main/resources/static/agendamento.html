@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Clínica Innovare - Agendamento</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; border: none; cursor: pointer; }
+        #resultado { margin-top: 20px; padding: 10px; background-color: #f8f9fa; border-left: 5px solid #28a745; display: none; }
+    </style>
+</head>
+<body>
+    <h2>Novo Agendamento</h2>
+    <input type="text" id="nome" placeholder="Nome do Paciente">
+    <input type="text" id="cpf" placeholder="CPF (apenas números)">
+    <input type="number" id="leadTime" placeholder="Dias de antecedência (Lead Time)">
+    <select id="tipo">
+        <option value="Estético">Estético</option>
+        <option value="Cirúrgico">Cirúrgico</option>
+        <option value="Manutenção">Manutenção</option>
+    </select>
+    <input type="number" id="valor" placeholder="Valor do Procedimento (R$)">
+    <button onclick="enviarAgendamento()">Agendar</button>
+
+    <div id="resultado"></div>
+
+    <hr>
+    <button onclick="window.location.href='/menuClientes.html'">VOLTAR</button>
+
+    <script>
+        async function enviarAgendamento() {
+            const dados = {
+                paciente: {
+                    nome: document.getElementById('nome').value,
+                    cpf: document.getElementById('cpf').value
+                },
+                leadTime: parseInt(document.getElementById('leadTime').value),
+                tipoProcedimento: document.getElementById('tipo').value,
+                valor: parseFloat(document.getElementById('valor').value),
+                dataHora: new Date().toISOString() // O Postgres precisa de uma data válida
+            };
+
+            try {
+                const response = await fetch('/api/agendamentos', {
+                    method: 'POST', // TEM DE SER POST
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (!response.ok) throw new Error("Erro no servidor");
+
+                const resultado = await response.json();
+                alert("Sucesso! Agendamento nº: " + resultado.id);
+                location.reload(); // Recarrega para limpar o form
+            } catch (error) {
+                console.error(error);
+                alert("Erro ao salvar. Verifica o console do VS Code!");
+            }
+        }
+    </script>
+</body>
+</html>
