@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScoreOutputDTO {
-    private double probabilidadeFalta;
-    private String justificativa;
+    private String nivelRisco;
     private String recomendacao; 
-    private String NivelRisco;
+    private String justificativa;
 }

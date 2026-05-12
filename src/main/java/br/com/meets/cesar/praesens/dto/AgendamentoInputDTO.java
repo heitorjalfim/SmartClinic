@@ -1,13 +1,18 @@
 package br.com.meets.cesar.praesens.dto;
 
+import java.time.*;
+import jakarta.validation.constraints.Email;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 public class AgendamentoInputDTO {
-    private String cpfPaciente;   
+    @Email
+    private String eMail;   
+    private String nomePaciente;
     private String localidade;    
-    private LocalDateTime dataHora;
-    private Integer valor_procedimento;
+    private LocalTime Hora;
+    private LocalDate data;
+    private Double valor_procedimento;
     private String tipo_procedimento;
+    private String telefone;
 }

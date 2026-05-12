@@ -1,15 +1,13 @@
 package br.com.meets.cesar.praesens.model;
 
 import lombok.*;
-
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import java.time.*;
 
 @Entity
 @Getter
@@ -24,11 +22,10 @@ public class AgendamentoModel {
     @Setter private PacienteModel paciente;
 
     @Column(nullable = true)
-    @Setter private LocalDateTime dataHora = LocalDateTime.now();
+    @Setter private LocalTime hora;
+    @Setter private LocalDate data;
 
-    @Column(nullable = true)
-    @Setter private Integer distancia = 0;
-
+    @Setter private String localidade;
     @Setter private String Tipo_Procedimento;
     @Setter private Double Valor_Procedimento;
     @Setter private String status;

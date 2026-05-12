@@ -17,7 +17,6 @@ public class PacienteModel {
     @Column(nullable = true)
     @Setter private String email;
 
-    @Setter private String cpf;
     @Setter private String nome;
 
     @Column(name = "historico_no_show", nullable = false)
@@ -28,4 +27,6 @@ public class PacienteModel {
 
     @Column(name = "score_honra", nullable = false)
     @Setter private Integer Score_Honra = 100;
+
+    @Setter private String telefone;
 }
