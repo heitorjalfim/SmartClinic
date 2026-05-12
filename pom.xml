@@ -61,13 +61,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>ml.dmlc</groupId>
-			<artifactId>xgboost4j_2.12</artifactId>
-			<version>1.7.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

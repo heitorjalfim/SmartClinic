@@ -1,5 +1,6 @@
 package br.com.meets.cesar.praesens.controller;
 
+import br.com.meets.cesar.praesens.dto.AgendamentoInputDTO;
 import br.com.meets.cesar.praesens.model.AgendamentoModel;
 import br.com.meets.cesar.praesens.service.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class AgendamentoController {
     private AgendamentoService agendamentoService;
 
     @PostMapping
-    public ResponseEntity<AgendamentoModel> criar(@RequestBody AgendamentoModel agendamento) {
-        AgendamentoModel salvo = agendamentoService.salvar(agendamento);
+    public ResponseEntity<AgendamentoModel> criar(@RequestBody AgendamentoInputDTO agendamento) {
+        AgendamentoModel salvo = agendamentoService.salvar(agendamento, false);
         return ResponseEntity.status(201).body(salvo);
     }
 
@@ -30,4 +31,9 @@ public class AgendamentoController {
         agendamentoService.registrarFalta(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/admin/agendar")
+        public AgendamentoModel agendarPelaClinica(@RequestBody AgendamentoInputDTO dados) {
+            return agendamentoService.salvar(dados, true);
+        }
 }
