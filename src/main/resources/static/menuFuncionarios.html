@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Clínica Innovare - Menu Funcionários</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        button { display: block; width: 100%; margin: 10px 0; padding: 30px; box-sizing: border-box; background-color: #28a745; color: white; border: none; cursor: pointer; }
+        button.voltar { background-color: #6c757d; }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Área do Funcionário</h2>
+    <div class="menu">
+        <button onclick="window.location.href='painel.html'">PAINEL DE GESTÃO E AGENDAMENTOS</button>
+        <button onclick="window.location.href='financeiro.html'">PERFORMANCE FINANCEIRA</button>
+        <button onclick="window.location.href='detalheCliente.html'">BUSCAR HISTÓRICO DE CLIENTE</button>
+        <button class="voltar" onclick="window.location.href='index.html'">VOLTAR AO INÍCIO</button> 
+    </div>
+</body>
+</html>
