@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Performance Financeira</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 900px; margin: 30px auto; padding: 20px; background-color: #f4f7f6; }
+        .header { display: flex; gap: 20px; margin-bottom: 30px; font-weight: bold; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .header span { cursor: pointer; color: #555; }
+        h2 { font-size: 1.2rem; margin-bottom: 20px; }
+        .kpi-container { display: flex; gap: 20px; margin-bottom: 40px; }
+        .kpi-box { flex: 1; text-align: center; }
+        .kpi-title { font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
+        .kpi-value { background-color: #1a7a1a; color: white; padding: 15px; font-size: 1.5rem; font-weight: bold; border-radius: 4px; }
+        .kpi-sub { font-size: 0.8rem; color: #666; margin-top: 5px; }
+        .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="menuFuncionarios.html" class="btn-voltar">← Voltar para o Menu de Funcionários</a>
+    
+    <div class="header">
+        <span>Início</span> <span>Agendamentos</span> <span>Pacientes</span> <span>Relatórios</span> <span style="margin-left: auto;">Login</span>
+    </div>
+
+    <h2>Painel de performance financeira (Yield management)</h2>
+
+    <div class="kpi-container">
+        <div class="kpi-box">
+            <div class="kpi-title">Receita protegida (total)</div>
+            <div class="kpi-value">R$140.000,00</div>
+            <div class="kpi-sub">+12% vs mês anterior</div>
+        </div>
+        <div class="kpi-box">
+            <div class="kpi-title">Oportunidade recuperada</div>
+            <div class="kpi-value">R$32.400,00</div>
+            <div class="kpi-sub">*vagas preenchidas via score</div>
+        </div>
+        <div class="kpi-box">
+            <div class="kpi-title">ROI do sistema</div>
+            <div class="kpi-value">4.8x</div>
+            <div class="kpi-sub">*ganhos vs custo do sistema</div>
+        </div>
+    </div>
+    
+    <!-- Gráfico será inserido aqui pelo backend futuramente -->
+    <div style="height: 200px; background-color: #eaeaea; display: flex; align-items: center; justify-content: center; color: #888; border-radius: 4px;">
+        Área reservada para o Gráfico de Evolução e Estratégias
+    </div>
+</body>
+</html>

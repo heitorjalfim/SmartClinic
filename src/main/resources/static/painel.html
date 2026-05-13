@@ -10,142 +10,121 @@
             --success: #28a745;
             --warning: #ffc107;
             --dark: #212529;
+            --bg: #e5e5e5;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 1100px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
-        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: left; }
-        th { background-color: #e9ecef; color: var(--dark); font-weight: 600; }
-        tr:hover { background-color: #f8f9fa; }
-        .btn-falta { background-color: var(--danger); color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; transition: 0.2s; }
-        .btn-falta:hover { background-color: #a71d2a; }
-        .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--primary); font-weight: bold; }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.9em; font-weight: bold; }
-        .risco-baixo { background: #d4edda; color: #155724; }
-        .risco-medio { background: #fff3cd; color: #856404; }
-        .risco-alto { background: #f8d7da; color: #721c24; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #333; color: #333;}
+        
+        .card { background: var(--bg); padding: 0px 20px 20px 20px; margin-bottom: 30px; border: 2px solid #000; }
+        
+        .header-menu { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding: 10px 0; margin-bottom: 20px; font-weight: bold;}
+        .header-menu span { margin-right: 15px; cursor: pointer;}
+        
+        h2 { font-size: 1.2rem; font-weight: normal; margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: var(--bg); border: 2px solid #000;}
+        th, td { border: 2px solid #000; padding: 8px; text-align: center; font-size: 0.9rem;}
+        th { background-color: #e9ecef; font-weight: normal; }
+        
+        .col-horario { width: 60px; }
+        .col-paciente { text-align: left; }
+        
+        .btn-acao { background-color: var(--bg); color: #333; border: none; cursor: pointer; text-decoration: none;}
+        .btn-acao:hover { text-decoration: underline; }
+
+        .legenda-risco { display: flex; justify-content: center; margin-top: 30px; width: 80%; margin-left: auto; margin-right: auto;}
+        .legenda-risco table { margin-top: 5px;}
+        .legenda-risco th, .legenda-risco td { padding: 5px; font-size: 0.8rem;}
+
+        .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #fff; font-weight: bold; }
     </style>
 </head>
 <body>
-    <a href="/" class="btn-voltar">← Voltar para Agendamento</a>
+    <a href="menuFuncionarios.html" class="btn-voltar">← Voltar para o Menu de Funcionários</a>
 
     <div class="card">
-        <h2>📊 Painel de Pacientes (Geral)</h2>
+        <div class="header-menu">
+            <div>
+                <span>Início</span>
+                <span>Agendamentos</span>
+                <span>Pacientes</span>
+                <span>Relatórios</span>
+            </div>
+            <span>Login</span>
+        </div>
+
+        <h2>Agenda do dia: 16/03/2026</h2>
+        
         <table>
             <thead>
                 <tr>
-                    <th>Paciente</th>
-                    <th>CPF</th>
-                    <th>Agendamentos</th>
-                    <th>Faltas</th>
-                    <th>Score Honra</th>
-                    <th>Risco Médio</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="tabela-pacientes"></tbody>
-        </table>
-    </div>
-
-    <div class="card">
-        <h2>📅 Próximos Agendamentos (Detalhados)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Paciente</th>
-                    <th>CPF</th>
+                    <th class="col-horario">8:00</th>
+                    <th>Pacientes</th>
                     <th>Procedimento</th>
-                    <th>Valor</th>
-                    <th>Risco Atual</th>
-                    <th>Ações</th>
+                    <th>Risco de falta</th>
+                    <th>Ações rápidas</th>
                 </tr>
             </thead>
-            <tbody id="tabela-agendamentos"></tbody>
+            <tbody id="tabela-agendamentos">
+                <!-- Linhas inseridas pelo JS -->
+            </tbody>
         </table>
+
+        <div class="legenda-risco">
+            <table>
+                 <thead>
+                    <tr>
+                        <th style="border: none;"></th>
+                        <th style="border: none; font-weight: normal; font-size: 0.8rem;">Baixo</th>
+                        <th style="border: none; font-weight: normal; font-size: 0.8rem;">Mediano</th>
+                        <th style="border: none; font-weight: normal; font-size: 0.8rem;">Alto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #e9ecef;">Nível de risco</td>
+                        <td>de 1% até 35%</td>
+                        <td>de 36% até 60%</td>
+                        <td>acima de 60%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <script>
-        // Auxiliar para definir cor do risco
-        function getClasseRisco(valor) {
-            if (valor < 20) return 'risco-baixo';
-            if (valor < 50) return 'risco-medio';
-            return 'risco-alto';
+        // Dados mockados baseados no wireframe "Agendamentos - História 1"
+        const dadosAgendamentos = [
+            { horario: "9:00", paciente: "Maria Júlia de souza", procedimento: "?", risco: "15%", classRisco: "baixo" },
+            { horario: "10:00", paciente: "Eduardo Henrique Alves", procedimento: "?", risco: "85%", classRisco: "alto" },
+            { horario: "11:00", paciente: "Sofia Rodrigues", procedimento: "?", risco: "40%", classRisco: "mediano" },
+            { horario: "14:00", paciente: "João Cavalcante", procedimento: "?", risco: "60%", classRisco: "mediano" }
+        ];
+
+        function carregarPainel() {
+            const corpoAgendamentos = document.getElementById('tabela-agendamentos');
+            corpoAgendamentos.innerHTML = "";
+
+            dadosAgendamentos.forEach(a => {
+                let textoRisco = a.risco ? `${a.risco} (${a.classRisco})` : "";
+                let botaoAcao = a.paciente ? `<button class="btn-acao" onclick="confirmarAgendamento('${a.paciente}')">Confirmar [x]</button>` : "";
+
+                corpoAgendamentos.innerHTML += `
+                    <tr>
+                        <td class="col-horario">${a.horario}</td>
+                        <td class="col-paciente">${a.paciente}</td>
+                        <td>${a.procedimento}</td>
+                        <td>${textoRisco}</td>
+                        <td>${botaoAcao}</td>
+                    </tr>
+                `;
+            });
         }
 
-        async function carregarPainel() {
-            try {
-                // 1. Carrega Pacientes
-                const resPacientes = await fetch('/api/painel');
-                const pacientes = await resPacientes.json();
-                const corpoPacientes = document.getElementById('tabela-pacientes');
-                corpoPacientes.innerHTML = "";
-
-                pacientes.forEach(p => {
-                    const total = p.totalAgendamentos || 1;
-                    const faltas = p.totalFaltas || 0;
-                    const risco = (faltas / total) * 100;
-                    
-                    corpoPacientes.innerHTML += `
-                        <tr>
-                            <td>${p.nome || 'N/A'}</td>
-                            <td>${p.cpf || '-'}</td>
-                            <td>${p.totalAgendamentos || 0}</td>
-                            <td>${p.totalFaltas || 0}</td>
-                            <td>${p.scoreHonra || 0}</td>
-                            <td><span class="badge ${getClasseRisco(risco)}">${risco.toFixed(1)}%</span></td>
-                            <td>
-                                <button class="btn-falta" onclick="registrarFalta('${p.cpf}')">Registrar Falta</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-
-                // 2. Carrega Agendamentos
-                const resAgendamentos = await fetch('/api/lista-agendamentos');
-                const agendamentos = await resAgendamentos.json();
-                const corpoAgendamentos = document.getElementById('tabela-agendamentos');
-                corpoAgendamentos.innerHTML = "";
-
-                agendamentos.forEach(a => {
-                    // Proteção contra objetos nulos (Optional Chaining)
-                    const nomeP = a.paciente?.nome || "Não informado";
-                    const cpfP = a.paciente?.cpf || "-";
-                    const riscoA = a.probabilidadeFalta || 0;
-
-                    corpoAgendamentos.innerHTML += `
-                        <tr>
-                            <td><strong>${nomeP}</strong></td>
-                            <td>${cpfP}</td>
-                            <td>${a.tipoProcedimento || 'Consulta'}</td>
-                            <td>R$ ${(a.valorProcedimento || 0).toFixed(2)}</td>
-                            <td><span class="badge ${getClasseRisco(riscoA)}">${riscoA.toFixed(1)}%</span></td>
-                            <td>
-                                <button class="btn-falta" onclick="registrarFalta('${cpfP}')">Faltou</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-
-            } catch (error) {
-                console.error("Erro ao carregar dados:", error);
-            }
+        function confirmarAgendamento(nome) {
+            alert("Agendamento de " + nome + " confirmado!");
         }
 
-        async function registrarFalta(cpf) {
-            if (cpf === "-" || !cpf) return alert("CPF inválido!");
-            if (confirm("Confirmar registro de falta para o CPF: " + cpf + "?")) {
-                try {
-                    const response = await fetch(`/api/registrar-falta?cpf=${cpf}`, { method: 'POST' });
-                    const mensagem = await response.text();
-                    alert(mensagem);
-                    carregarPainel(); 
-                } catch (err) {
-                    alert("Erro ao conectar com o servidor.");
-                }
-            }
-        }
-
-        // Inicia o painel
         carregarPainel();
     </script>
 </body>
