@@ -15,6 +15,12 @@ public class AgendamentoController {
     @Autowired
     private AgendamentoService agendamentoService;
 
+    @PostMapping("/admin/agendar")
+    public ResponseEntity<AgendamentoModel> agendarPelaClinica(@RequestBody AgendamentoInputDTO dados) {
+        AgendamentoModel salvo = agendamentoService.salvar(dados, false);
+        return ResponseEntity.status(201).body(salvo);
+    }
+
     @PostMapping
     public ResponseEntity<AgendamentoModel> criar(@RequestBody AgendamentoInputDTO agendamento) {
         AgendamentoModel salvo = agendamentoService.salvar(agendamento, false);
@@ -31,9 +37,4 @@ public class AgendamentoController {
         agendamentoService.registrarFalta(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/admin/agendar")
-        public AgendamentoModel agendarPelaClinica(@RequestBody AgendamentoInputDTO dados) {
-            return agendamentoService.salvar(dados, true);
-        }
 }

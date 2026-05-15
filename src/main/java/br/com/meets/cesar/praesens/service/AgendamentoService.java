@@ -22,32 +22,32 @@ public class AgendamentoService {
     private PacienteRepository pacienteRepository;
 
     public AgendamentoModel salvar(AgendamentoInputDTO agendamento, boolean isOperacaoClinica) {
-        long totalMesmoHorario = agendamentoRepository.countByHoraAndData(agendamento.getHora(), agendamento.getData());
-        int limitePermitido = isOperacaoClinica ? 2 : 1;
-        if (totalMesmoHorario >= limitePermitido) {
-            
+        Long totalMesmoHorario = agendamentoRepository.countByHoraAndData(agendamento.getHora(), agendamento.getData());
+        int limite = isOperacaoClinica ? 2 : 1;
+        if (totalMesmoHorario >= limite) {
+            throw new RuntimeException("Limite de consultas atingido");
         }
-
         PacienteModel paciente = pacienteRepository.findByEmail(agendamento.getEMail()).orElseGet(() -> {
-            PacienteModel novoPaciente = new PacienteModel();
-            novoPaciente.setEmail(agendamento.getEMail());
-            novoPaciente.setNome(agendamento.getNomePaciente());
-            novoPaciente.setHistorico_NoShow(0);
-            novoPaciente.setTotalAgendamentos(0);
-            novoPaciente.setTelefone(agendamento.getTelefone());
-            return pacienteRepository.save(novoPaciente);
+            PacienteModel pacienteNovo = new PacienteModel();
+            pacienteNovo.setEmail(agendamento.getEMail());
+            pacienteNovo.setNome(agendamento.getNomePaciente());
+            pacienteNovo.setTelefone(agendamento.getTelefone());
+            pacienteNovo.setHistorico_NoShow(0);
+            pacienteNovo.setScore_Honra(0);
+            pacienteNovo.setTotalAgendamentos(1);
+            return pacienteRepository.save(pacienteNovo);
         });
 
-        AgendamentoModel novoAgendamento = new AgendamentoModel();
-        novoAgendamento.setLocalidade(agendamento.getLocalidade());
-        novoAgendamento.setHora(agendamento.getHora());
-        novoAgendamento.setData(agendamento.getData());
-        novoAgendamento.setPaciente(paciente);
-        novoAgendamento.setTipo_Procedimento(agendamento.getTipo_procedimento());
-        novoAgendamento.setValor_Procedimento(agendamento.getValor_procedimento());
-        novoAgendamento.setStatus("AGENDADO");
-
-        return agendamentoRepository.save(novoAgendamento);
+        AgendamentoModel agendamentoNovo = new AgendamentoModel();
+        agendamentoNovo.setData(agendamento.getData());
+        agendamentoNovo.setHora(agendamento.getHora());
+        agendamentoNovo.setLocalidade(agendamento.getLocalidade());
+        agendamentoNovo.setPaciente(paciente);
+        agendamentoNovo.setStatus("AGENDADO");
+        agendamentoNovo.setProbabilidade_Falta(0.0);
+        agendamentoNovo.setValor_Procedimento(agendamento.getValor_procedimento());
+        agendamentoNovo.setTipo_Procedimento(agendamento.getTipo_procedimento());
+        return agendamentoRepository.save(agendamentoNovo);
     }
 
     public void registrarFalta(Long idAgendamento) {
