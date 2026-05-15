@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.*;
 import org.springframework.stereotype.Service;
 
+@Service
 @Data
 @Service
 public class ExternalApiService {

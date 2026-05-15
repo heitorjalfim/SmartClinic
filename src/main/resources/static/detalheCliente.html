@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Cliente - Detalhe</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; max-width: 900px; margin: 30px auto; padding: 20px; background-color: #f4f7f6; }
+        .header { display: flex; gap: 20px; margin-bottom: 30px; font-weight: bold; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .header span { cursor: pointer; color: #555; }
+        .info-superior { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.9rem; }
+        .bloco-central { display: flex; gap: 30px; margin-bottom: 30px; align-items: center; }
+        .foto-placeholder { width: 150px; height: 150px; border: 2px dashed #999; display: flex; align-items: center; justify-content: center; background-color: white; }
+        .tabela-presencas { border-collapse: collapse; text-align: center; }
+        .tabela-presencas th, .tabela-presencas td { border: 1px solid #333; padding: 10px; }
+        .tabela-presencas th { background-color: #e9ecef; font-size: 0.8rem; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-bottom: 20px; }
+        th, td { border: 1px solid #dee2e6; padding: 10px; text-align: left; font-size: 0.9rem; }
+        th { background-color: #e9ecef; }
+        .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; font-weight: bold; }
+        .btn-vermelho { background-color: #dc3545; color: white; padding: 10px 20px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px;}
+    </style>
+</head>
+<body>
+    <a href="menuFuncionarios.html" class="btn-voltar">← Voltar para o Menu de Funcionários</a>
+
+    <div class="header">
+        <span>Início</span> <span>Agendamentos</span> <span>Pacientes</span> <span>Relatórios</span> <span style="margin-left: auto;">Login</span>
+    </div>
+
+    <div class="info-superior">
+        <strong>Eduardo Henrique Alves</strong>
+        <span>Última consulta: 10/02/2026 [Status: Ativo]</span>
+        <span>Risco Atual de no-show: 85% (alto)</span>
+    </div>
+
+    <div class="bloco-central">
+        <div class="foto-placeholder">Foto do cliente</div>
+        
+        <table class="tabela-presencas">
+            <thead>
+                <tr>
+                    <th>Presenças</th>
+                    <th>Faltas confirmadas (no-show)</th>
+                    <th>Cancelamentos antecipados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>8</td>
+                    <td>4</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Histórico de faltas [detalhado]</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Tipo de consulta</th>
+                <th>Profissional</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>15/03/2026</td><td>?</td><td>Dr. Alves</td></tr>
+            <tr><td>10/01/2026</td><td>?</td><td>Dr. Souza</td></tr>
+            <tr><td>15/11/2025</td><td>?</td><td>Dr. Costa</td></tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: right;">
+        <h4>[Análise do motor de risco] Por que 85%?</h4>
+        <ul style="list-style: none; padding: 0; font-size: 0.8rem; text-align: right;">
+            <li>⭐ Alto volume de faltas nos últimos 4 meses (2 de 4 agendamentos)</li>
+            <li>⭐ Padrão detectado: Faltas concentradas em segundas-feiras</li>
+            <li>⭐ Histórico de não responder a confirmações de whatsapp</li>
+        </ul>
+        <button class="btn-vermelho">NOTIFICAR AUSÊNCIAS</button>
+    </div>
+
+</body>
+</html>
