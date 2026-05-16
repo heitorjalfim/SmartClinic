@@ -9,6 +9,7 @@ import br.com.meets.cesar.praesens.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -38,6 +39,10 @@ public class AgendamentoService {
             return pacienteRepository.save(novoPaciente);
         });
 
+        //calc do leadtime
+        long diferencaDias = ChronoUnit.DAYS.between(LocalDate.now(), agendamento.getData());
+        int leadTimeCalculado = (int) Math.max(diferencaDias, 0); 
+
         AgendamentoModel novoAgendamento = new AgendamentoModel();
         novoAgendamento.setLocalidade(agendamento.getLocalidade());
         novoAgendamento.setHora(agendamento.getHora());
@@ -46,6 +51,7 @@ public class AgendamentoService {
         novoAgendamento.setTipo_Procedimento(agendamento.getTipo_procedimento());
         novoAgendamento.setValor_Procedimento(agendamento.getValor_procedimento());
         novoAgendamento.setStatus("AGENDADO");
+        novoAgendamento.setLeadTime(leadTimeCalculado);
 
         return agendamentoRepository.save(novoAgendamento);
     }

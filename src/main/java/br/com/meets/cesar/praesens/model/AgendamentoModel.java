@@ -32,4 +32,7 @@ public class AgendamentoModel {
 
     @Column(nullable = true)
     @Setter private Double Probabilidade_Falta = 0.0;
+
+    @Column(name = "lead_time", nullable = false)
+    @Setter private Integer leadTime;
 }
