@@ -81,6 +81,7 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 * **O que foi feito:** Implementação da lógica matemática no `AgendamentoService` para calcular o percentual de ocupação diária das salas. Essa métrica foi acoplada ao endpoint `GET /api/agendamentos/disponibilidade`, retornando dinamicamente a chave `chairUtilization`.
 * **Valor gerado:** Fornece um indicador de eficiência operacional em tempo real, permitindo que a gestão monitore a ociosidade da clínica e tome decisões baseadas em dados (como encaixes ou campanhas).
 
+🔍 Como testar localmente:
 `http://localhost:8080/api/agendamentos/disponibilidade?data=2026-05-19` *(Substitua pela data do agendamento de teste e observe o percentual atualizado)*.
 
 
