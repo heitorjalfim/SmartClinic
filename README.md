@@ -86,8 +86,9 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ---
 
-### 🛠️ Issues do Projeto
+### 🛠️ Issues do Projeto:
 
+<img width="986" height="106" alt="image" src="https://github.com/user-attachments/assets/1528348a-812b-442e-89b2-6b4a4fc180fd" />
 
 
 ---
@@ -97,15 +98,114 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 * **Link do Vídeo:** ([Insira_o_link_do_YouTube_Aqui](https://youtu.be/...))
 * *Nota: O vídeo demonstra o consumo dos pesos dinâmicos na API de Risco (H9), o cálculo em tempo real da ocupação no endpoint de disponibilidade (H12) e a execução do ambiente via Docker, conforme documentado no README.*
 
+
+# Documentação de Instalação e Execução — Praesens Meets Intelligence
+
+## 🚀 Guia de Configuração e Setup do Ambiente Local (Entrega 4)
+
+Este guia permite que qualquer pessoa — seja um avaliador ou outro desenvolvedor — consiga clonar o repositório, provisionar a infraestrutura de dados e executar o projeto localmente em menos de 3 minutos, eliminando o problema do "na minha máquina funciona".
+
+### 1) Pré-requisitos Mínimos
+
+Antes de começar, certifique-se de ter instalado em sua máquina:
+* **Git** (v2.30 ou superior)
+* **Docker e Docker Compose** (Essencial para a orquestração da infraestrutura de dados)
+* **Java JDK 17**
+* **Maven 3.9+** (Opcional, pois o projeto conta com o Maven Wrapper)
+* * **PostgreSQL** rodando na sua porta `hdj251106' ****
+
 ---
 
-## 🟣 Persistência de Dados (H2 Database)
+### 2) Clonar o Repositório e Acessar a Pasta
 
-*Para esta entrega, utilizamos o banco de dados H2, que opera em modo in-memory.*
+Abra o seu terminal e execute os comandos abaixo para baixar o código e entrar no diretório raiz do projeto:
 
-* **Vantagem:** Permite rodar o projeto instantaneamente sem configurações complexas de servidores SQL externos.
-* **Acesso Visual:** O console do banco fica disponível enquanto a aplicação está rodando.
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd Praesens-Meets-Inteligence
+```
 
+### 3) Instalação e Configuração do PostgreSQL
+
+Para garantir a persistência real dos dados, o projeto utiliza o banco de dados relacional PostgreSQL. Siga os passos abaixo para configurar o ambiente:
+
+1. **Instalação:** Acesse o site oficial da EDB e baixe a versão estável mais recente do PostgreSQL para o seu sistema operacional.
+2. **Componentes:** Execute o instalador e garanta que as opções **PostgreSQL Server** e **pgAdmin 4** estejam marcadas para instalação.
+3. **Senha do Superusuário (Crítico):** Quando o instalador solicitar, defina a senha master exatamente como: `hdj251106`.
+4. **Porta Padrão:** Mantenha a porta padrão de comunicação como `5432`.
+5. Finalize a instalação normalmente. Se o utilitário "Stack Builder" abrir ao final, pode fechá-lo sem instalar nada extra.
+
+---
+
+### 4) Criação do Banco de Dados (`praesens_db`)
+
+Com o servidor PostgreSQL instalado, precisamos criar o banco de dados específico do ecossistema:
+
+1. Abra o **pgAdmin 4** em sua máquina.
+2. No menu lateral esquerdo, expanda a aba **Servers** e insira a credencial de acesso `hdj251106`.
+3. Clique com o botão direito do mouse sobre **Databases** e vá em **Create** > **Database...**.
+4. No campo *Database*, digite exatamente o nome: `praesens_db`.
+5. Clique em **Save**.
+
+---
+
+
+
+---
+
+### 5) Build e Execução da Aplicação (Spring Boot)
+
+Com o banco de dados de pé e rodando no Docker, use os comandos abaixo para baixar as dependências do Java e iniciar o servidor web:
+
+#### No Linux / Mac:
+
+```bash
+./mvnw clean install
+./mvnw spring-boot:run
+```
+
+#### No Windows:
+
+```bash
+mvnw.cmd clean install
+mvnw.cmd spring-boot:run
+```
+
+*(Nota: Se você tiver o Maven instalado globalmente nas variáveis de ambiente, pode substituir por `mvn clean install` e `mvn spring-boot:run`).*
+
+A aplicação fará o build, executará as migrações automáticas de tabelas via Hibernate JPA (`ddl-auto=update`) e subirá por padrão no endereço:
+👉 **http://localhost:8080**
+
+---
+
+#### 🔍 Outros Acessos:
+* **Documentação Swagger UI:** `http://localhost:8080/swagger-ui/index.html`
+* **Interface Front-end Estática:** `http://localhost:8080/index.html`
+
+---
+
+### 6) Problemas Comuns e Soluções
+
+* **Erro de Porta 8080 já em uso:**
+  Abra o arquivo `src/main/resources/application.properties` e altere a porta da aplicação:
+
+```properties
+server.port=8081
+```
+
+
+### 7) Encerrar a Aplicação e a Infraestrutura
+
+Para parar o servidor Spring Boot, vá até o terminal e pressione **Ctrl + C**.
+
+---
+
+##  Persistência de Dados (PostgreSQL)
+
+* evoluímos a nossa arquitetura e migramos do banco em memória (H2) para o **PostgreSQL**, garantindo a persistência real e a integridade dos dados.*
+
+* **Vantagem:** Permite o armazenamento definitivo de informações (como o histórico de pacientes e agendamentos), simulando um ambiente de produção real e evitando a perda de dados toda vez que o servidor é reiniciado.
+* **Gerenciamento e Acesso Visual:** O banco de dados e suas tabelas podem ser facilmente acessados, manipulados e monitorados através da interface do **pgAdmin 4**.
 ---
 
 ## 🛠️ Como Executar e Validar
@@ -119,140 +219,13 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ---
 
-# Documentação de Instalação e Execução — Praesens Meets Intelligence
-
-## 🚀 Guia de Configuração e Setup do Ambiente Local (Entrega 4)
-
-Este guia permite que qualquer pessoa — seja um avaliador ou outro desenvolvedor — consiga clonar o repositório, provisionar a infraestrutura de dados e executar o projeto localmente em menos de 3 minutos, eliminando o problema do *"na minha máquina funciona"*.
-
-### 1) Pré-requisitos Mínimos
-Antes de começar, certifique-se de ter instalado em sua máquina:
-* **Git** (v2.30 ou superior)
-* **Docker e Docker Compose** (Essencial para a orquestração da infraestrutura de dados)
-* **Java JDK 17**
-* **Maven 3.9+** (Opcional, pois o projeto conta com o Maven Wrapper)
-
-### 2) Clonar o Repositório e Acessar a Pasta
-Abra o seu terminal e execute os comandos abaixo para baixar o código e entrar no diretório raiz do projeto:
-``bash
-git clone https://github.com/ENZOBRS/Praesens-Meets-Inteligence.git
-cd Praesens-Meets-Inteligence
-
-
-
-```markdown
-# Documentação de Instalação e Execução — Praesens Meets Intelligence
-
-## 🚀 Guia de Configuração e Setup do Ambiente Local (Entrega 4)
-
-Este guia permite que qualquer pessoa — seja um avaliador ou outro desenvolvedor — consiga clonar o repositório, provisionar a infraestrutura de dados e executar o projeto localmente em menos de 3 minutos, eliminando o problema do *"na minha máquina funciona"*.
-
-### 1) Pré-requisitos Mínimos
-Antes de começar, certifique-se de ter instalado em sua máquina:
-* **Git** (v2.30 ou superior)
-* **Docker e Docker Compose** (Essencial para a orquestração da infraestrutura de dados)
-* **Java JDK 17**
-* **Maven 3.9+** (Opcional, pois o projeto conta com o Maven Wrapper)
-
----
-
-### 2) Clonar o Repositório e Acessar a Pasta
-
-Abra o seu terminal e execute os comandos abaixo para baixar o código e entrar no diretório raiz do projeto:
-
-```bash
-git clone [https://github.com/ENZOBRS/Praesens-Meets-Inteligence.git](https://github.com/ENZOBRS/Praesens-Meets-Inteligence.git)
-cd Praesens-Meets-Inteligence
-
-```
-
----
-
-### 🛠️ 3) Orquestração da Infraestrutura (Banco de Dados via Docker)
-
-Para simplificar o setup, o banco de dados relacional **PostgreSQL** está totalmente containerizado. Você **não precisa** instalar ou configurar um servidor de banco de dados localmente na sua máquina. O Docker trata de baixar a imagem oficial, expor a porta padrão `5432` e criar a base de dados `praesens_db` automaticamente.
-
-Na raiz do projeto (onde está o arquivo `docker-compose.yml`), execute o comando para subir o banco em segundo plano:
-
-```bash
-docker-compose up -d
-
-```
-
----
-
-### 4) Build e Execução da Aplicação (Spring Boot)
-
-Com o banco de dados de pé e rodando no Docker, use os comandos abaixo no seu terminal para baixar as dependências do Java e iniciar o servidor web:
-
-#### No Linux / Mac:
-
-```bash
-./mvnw clean install
-./mvnw spring-boot:run
-
-```
-
-#### No Windows:
-
-```bash
-mvnw.cmd clean install
-mvnw.cmd spring-boot:run
-
-```
-
-*(Nota: Se você tiver o Maven instalado globalmente nas variáveis de ambiente, pode substituir por `mvn clean install` e `mvn spring-boot:run`).*
-
-A aplicação fará o build, executará as migrações automáticas de tabelas via Hibernate JPA (`ddl-auto=update`) e subirá por padrão no endereço:
-
-👉 **http://localhost:8080**
-
----
-
-
-
-### 6) Problemas Comuns e Soluções
-
-* **Erro de Porta 8080 já em uso:**
-Abra o arquivo `src/main/resources/application.properties` e altere a porta da aplicação:
-```properties
-server.port=8081
-
-```
-
-
-* **Banco de dados não conecta:**
-Certifique-se de que o container do Docker subiu corretamente rodando o comando `docker ps`. Se a porta 5432 estiver ocupada por um PostgreSQL local da sua máquina, derrube o serviço local antes de rodar o `docker-compose up -d`.
-
----
-
-### 7) Encerrar a Aplicação e a Infraestrutura
-
-Para parar o servidor Spring Boot, vá até o terminal e pressione **Ctrl + C**.
-
-Para derrubar o container do banco de dados e limpar os recursos do Docker, execute o comando:
-
-```bash
-docker-compose down
-
-```
-
-```
-
-```
----
-
-
-
-
-
 ## 💻 Stack Técnica Utilizada
 
 | Tecnologia |
 | :--- |
 | **Java 17** |
-| **Spring Boot 3.2.4** |
+| **Spring Boot 4.0.4.** |
 | **Maven** |
-| **H2 Database** |
+| **PostgreSQL** |
 | **SpringDoc OpenAPI** |
 | **Lombok** |**
