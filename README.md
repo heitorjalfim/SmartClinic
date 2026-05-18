@@ -84,6 +84,11 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 🔍 Como testar localmente:
 `http://localhost:8080/api/agendamentos/disponibilidade?data=2026-05-19` *(Substitua pela data do agendamento de teste e observe o percentual atualizado)*.
 
+## 🎥 Screencast (Demonstração)
+* **Link do Vídeo:** (https://youtu.be/8t4Xd_CsaEY)
+
+--
+
 
 
 
