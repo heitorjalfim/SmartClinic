@@ -111,7 +111,6 @@ Este guia permite que qualquer pessoa — seja um avaliador ou outro desenvolved
 
 Antes de começar, certifique-se de ter instalado em sua máquina:
 * **Git** (v2.30 ou superior)
-* **Docker e Docker Compose** (Essencial para a orquestração da infraestrutura de dados)
 * **Java JDK 17**
 * **Maven 3.9+** (Opcional, pois o projeto conta com o Maven Wrapper)
 * * **PostgreSQL** rodando na sua porta `hdj251106' ****
@@ -123,7 +122,7 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 Abra o seu terminal e execute os comandos abaixo para baixar o código e entrar no diretório raiz do projeto:
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/ENZOBRS/Praesens-Meets-Inteligence.git
 cd Praesens-Meets-Inteligence
 ```
 
