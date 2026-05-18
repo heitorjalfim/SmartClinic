@@ -86,7 +86,7 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ## 🎥 Screencast (Demonstração)
 * **Link do Vídeo:** (https://youtu.be/8t4Xd_CsaEY)
-
+* *Nota: O vídeo demonstra o consumo dos pesos dinâmicos na API de Risco (H9), o cálculo em tempo real da ocupação no endpoint de disponibilidade (H12), conforme documentado no README.*
 --
 
 
@@ -102,10 +102,6 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ---
 
-### 🎥 Screencast (Demonstração)
-
-* **Link do Vídeo:** ([Insira_o_link_do_YouTube_Aqui](https://youtu.be/...))
-* *Nota: O vídeo demonstra o consumo dos pesos dinâmicos na API de Risco (H9), o cálculo em tempo real da ocupação no endpoint de disponibilidade (H12), conforme documentado no README.*
 
 
 # Documentação de Instalação e Execução — Praesens Meets Intelligence
