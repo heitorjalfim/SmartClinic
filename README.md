@@ -91,7 +91,8 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ### 🛠️ Issues do Projeto:
 
-<img width="986" height="106" alt="image" src="https://github.com/user-attachments/assets/1528348a-812b-442e-89b2-6b4a4fc180fd" />
+<img width="984" height="108" alt="image" src="https://github.com/user-attachments/assets/936c926c-94bc-4208-9b88-6f9983d2de33" />
+
 
 
 ---
