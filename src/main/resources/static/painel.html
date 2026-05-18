@@ -13,28 +13,20 @@
             --bg: #e5e5e5;
         }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #333; color: #333;}
-        
         .card { background: var(--bg); padding: 0px 20px 20px 20px; margin-bottom: 30px; border: 2px solid #000; }
-        
         .header-menu { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding: 10px 0; margin-bottom: 20px; font-weight: bold;}
         .header-menu span { margin-right: 15px; cursor: pointer;}
-        
         h2 { font-size: 1.2rem; font-weight: normal; margin-bottom: 20px; }
-        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; background: var(--bg); border: 2px solid #000;}
         th, td { border: 2px solid #000; padding: 8px; text-align: center; font-size: 0.9rem;}
         th { background-color: #e9ecef; font-weight: normal; }
-        
         .col-horario { width: 60px; }
         .col-paciente { text-align: left; }
-        
         .btn-acao { background-color: var(--bg); color: #333; border: none; cursor: pointer; text-decoration: none;}
         .btn-acao:hover { text-decoration: underline; }
-
         .legenda-risco { display: flex; justify-content: center; margin-top: 30px; width: 80%; margin-left: auto; margin-right: auto;}
         .legenda-risco table { margin-top: 5px;}
         .legenda-risco th, .legenda-risco td { padding: 5px; font-size: 0.8rem;}
-
         .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #fff; font-weight: bold; }
     </style>
 </head>
@@ -52,12 +44,12 @@
             <span>Login</span>
         </div>
 
-        <h2>Agenda do dia: 16/03/2026</h2>
-        
+        <h2 id="titulo-data">Agenda do dia: carregando...</h2>
+
         <table>
             <thead>
                 <tr>
-                    <th class="col-horario">8:00</th>
+                    <th class="col-horario">Hora</th>
                     <th>Pacientes</th>
                     <th>Procedimento</th>
                     <th>Risco de falta</th>
@@ -71,7 +63,7 @@
 
         <div class="legenda-risco">
             <table>
-                 <thead>
+                <thead>
                     <tr>
                         <th style="border: none;"></th>
                         <th style="border: none; font-weight: normal; font-size: 0.8rem;">Baixo</th>
@@ -89,40 +81,80 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 
     <script>
-        // Dados mockados baseados no wireframe "Agendamentos - História 1"
-        const dadosAgendamentos = [
-            { horario: "9:00", paciente: "Maria Júlia de souza", procedimento: "?", risco: "15%", classRisco: "baixo" },
-            { horario: "10:00", paciente: "Eduardo Henrique Alves", procedimento: "?", risco: "85%", classRisco: "alto" },
-            { horario: "11:00", paciente: "Sofia Rodrigues", procedimento: "?", risco: "40%", classRisco: "mediano" },
-            { horario: "14:00", paciente: "João Cavalcante", procedimento: "?", risco: "60%", classRisco: "mediano" }
-        ];
+        const API = 'http://localhost:8080';
 
-        function carregarPainel() {
-            const corpoAgendamentos = document.getElementById('tabela-agendamentos');
-            corpoAgendamentos.innerHTML = "";
+        // Mostra a data de hoje no título
+        const hoje = new Date().toLocaleDateString('pt-BR');
+        document.getElementById('titulo-data').textContent = `Agenda do dia: ${hoje}`;
 
-            dadosAgendamentos.forEach(a => {
-                let textoRisco = a.risco ? `${a.risco} (${a.classRisco})` : "";
-                let botaoAcao = a.paciente ? `<button class="btn-acao" onclick="confirmarAgendamento('${a.paciente}')">Confirmar [x]</button>` : "";
-
-                corpoAgendamentos.innerHTML += `
-                    <tr>
-                        <td class="col-horario">${a.horario}</td>
-                        <td class="col-paciente">${a.paciente}</td>
-                        <td>${a.procedimento}</td>
-                        <td>${textoRisco}</td>
-                        <td>${botaoAcao}</td>
-                    </tr>
-                `;
-            });
+        async function getRisco(id) {
+            try {
+                const res = await fetch(`${API}/api/risco/${id}`);
+                if (!res.ok) return null;
+                return await res.json();
+            } catch { return null; }
         }
 
-        function confirmarAgendamento(nome) {
-            alert("Agendamento de " + nome + " confirmado!");
+        async function carregarPainel() {
+            const corpo = document.getElementById('tabela-agendamentos');
+            corpo.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
+
+            try {
+                const res = await fetch(`${API}/api/agendamentos`);
+                const agendamentos = await res.json();
+
+                const comRisco = await Promise.all(
+                    agendamentos.map(async (a) => {
+                        const risco = await getRisco(a.id_Agendamento);
+                        return { ...a, risco };
+                    })
+                );
+
+                corpo.innerHTML = '';
+
+                if (comRisco.length === 0) {
+                    corpo.innerHTML = '<tr><td colspan="5">Nenhum agendamento encontrado.</td></tr>';
+                    return;
+                }
+
+                comRisco.forEach(a => {
+                    const riscoTexto = a.risco?.nivelRisco ?? '-';
+                    const prob = a.Probabilidade_Falta != null
+                        ? `${(a.Probabilidade_Falta * 100).toFixed(0)}% (${riscoTexto})`
+                        : riscoTexto;
+
+                    const horario = a.hora ?? '-';
+                    const nome = a.paciente?.nome ?? '-';
+                    const procedimento = a.Tipo_Procedimento ?? '?';
+
+
+                    corpo.innerHTML += `
+                        <tr>
+                            <td class="col-horario">${horario}</td>
+                            <td class="col-paciente">${nome}</td>
+                            <td>${procedimento}</td>
+                            <td>${prob}</td>
+                            <td><button class="btn-acao" onclick="confirmarAgendamento(${a.id_Agendamento})">Confirmar [x]</button></td>
+                        </tr>`;
+                });
+
+            } catch (err) {
+                corpo.innerHTML = '<tr><td colspan="5">Erro ao carregar agendamentos.</td></tr>';
+                console.error(err);
+            }
+        }
+
+        async function confirmarAgendamento(id) {
+            const res = await fetch(`${API}/api/agendamentos/${id}/falta`, { method: 'PATCH' });
+            if (res.ok) {
+                alert('Agendamento confirmado!');
+                carregarPainel();
+            } else {
+                alert('Erro ao confirmar.');
+            }
         }
 
         carregarPainel();
