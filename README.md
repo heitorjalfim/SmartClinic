@@ -73,12 +73,14 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 ✅ **História de Usuário 9: Cálculo de Risco Configurável e Rastreável**
 * **O que foi feito:** Refatoração do `RiscoService` para consumir os pesos do algoritmo (clima, trânsito, histórico de no-show) diretamente do arquivo `application.properties`. Foi adicionada uma proteção matemática contra divisão por zero para pacientes sem histórico, e o DTO de resposta agora expõe o objeto `detalhesPesos`.
 * **Valor gerado:** Permite que a gestão da clínica ajuste o comportamento da inteligência preditiva em tempo real, sem necessidade de recompilar o código, além de garantir total auditoria e transparência nas decisões do sistema.
+
 * 🔍 **Como testar localmente:** Com o sistema rodando, acesse no navegador: 
   `http://localhost:8080/api/risco/1` *(Observe o campo "detalhesPesos" no JSON de retorno)*.
 
 ✅ **História de Usuário 12: Métrica de Chair Utilization (Taxa de Ocupação)**
 * **O que foi feito:** Implementação da lógica matemática no `AgendamentoService` para calcular o percentual de ocupação diária das salas. Essa métrica foi acoplada ao endpoint `GET /api/agendamentos/disponibilidade`, retornando dinamicamente a chave `chairUtilization`.
 * **Valor gerado:** Fornece um indicador de eficiência operacional em tempo real, permitindo que a gestão monitore a ociosidade da clínica e tome decisões baseadas em dados (como encaixes ou campanhas).
+
 `http://localhost:8080/api/agendamentos/disponibilidade?data=2026-05-19` *(Substitua pela data do agendamento de teste e observe o percentual atualizado)*.
 
 
@@ -96,7 +98,7 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 ### 🎥 Screencast (Demonstração)
 
 * **Link do Vídeo:** ([Insira_o_link_do_YouTube_Aqui](https://youtu.be/...))
-* *Nota: O vídeo demonstra o consumo dos pesos dinâmicos na API de Risco (H9), o cálculo em tempo real da ocupação no endpoint de disponibilidade (H12) e a execução do ambiente via Docker, conforme documentado no README.*
+* *Nota: O vídeo demonstra o consumo dos pesos dinâmicos na API de Risco (H9), o cálculo em tempo real da ocupação no endpoint de disponibilidade (H12), conforme documentado no README.*
 
 
 # Documentação de Instalação e Execução — Praesens Meets Intelligence
@@ -155,7 +157,7 @@ Com o servidor PostgreSQL instalado, precisamos criar o banco de dados específi
 
 ### 5) Build e Execução da Aplicação (Spring Boot)
 
-Com o banco de dados de pé e rodando no Docker, use os comandos abaixo para baixar as dependências do Java e iniciar o servidor web:
+Com o banco de dados de pé, use os comandos abaixo para baixar as dependências do Java e iniciar o servidor web:
 
 #### No Linux / Mac:
 
