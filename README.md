@@ -138,33 +138,113 @@ Abra o seu terminal e execute os comandos abaixo para baixar o código e entrar 
 git clone https://github.com/ENZOBRS/Praesens-Meets-Inteligence.git
 cd Praesens-Meets-Inteligence
 
-🛠️ 3) Orquestração da Infraestrutura (Banco de Dados via Docker)
-Para simplificar o setup, o banco de dados relacional PostgreSQL está totalmente containerizado. Você não precisa instalar ou configurar um servidor de banco de dados localmente na sua máquina. O Docker trata de baixar a imagem oficial, expor a porta padrão "hdj251106" e criar a base de dados praesens_db automaticamente.
 
-Na raiz do projeto (onde está o arquivo docker-compose.yml), execute o comando para subir o banco em segundo plano:
 
-Bash
+```markdown
+# Documentação de Instalação e Execução — Praesens Meets Intelligence
+
+## 🚀 Guia de Configuração e Setup do Ambiente Local (Entrega 4)
+
+Este guia permite que qualquer pessoa — seja um avaliador ou outro desenvolvedor — consiga clonar o repositório, provisionar a infraestrutura de dados e executar o projeto localmente em menos de 3 minutos, eliminando o problema do *"na minha máquina funciona"*.
+
+### 1) Pré-requisitos Mínimos
+Antes de começar, certifique-se de ter instalado em sua máquina:
+* **Git** (v2.30 ou superior)
+* **Docker e Docker Compose** (Essencial para a orquestração da infraestrutura de dados)
+* **Java JDK 17**
+* **Maven 3.9+** (Opcional, pois o projeto conta com o Maven Wrapper)
+
+---
+
+### 2) Clonar o Repositório e Acessar a Pasta
+
+Abra o seu terminal e execute os comandos abaixo para baixar o código e entrar no diretório raiz do projeto:
+
+```bash
+git clone [https://github.com/ENZOBRS/Praesens-Meets-Inteligence.git](https://github.com/ENZOBRS/Praesens-Meets-Inteligence.git)
+cd Praesens-Meets-Inteligence
+
+```
+
+---
+
+### 🛠️ 3) Orquestração da Infraestrutura (Banco de Dados via Docker)
+
+Para simplificar o setup, o banco de dados relacional **PostgreSQL** está totalmente containerizado. Você **não precisa** instalar ou configurar um servidor de banco de dados localmente na sua máquina. O Docker trata de baixar a imagem oficial, expor a porta padrão `5432` e criar a base de dados `praesens_db` automaticamente.
+
+Na raiz do projeto (onde está o arquivo `docker-compose.yml`), execute o comando para subir o banco em segundo plano:
+
+```bash
 docker-compose up -d
-4) Build e Execução da Aplicação (Spring Boot)
-Com o banco de dados de pé e rodando no Docker, use os comandos abaixo para baixar as dependências do Java e iniciar o servidor web:
 
-No Linux / Mac:
-Bash
+```
+
+---
+
+### 4) Build e Execução da Aplicação (Spring Boot)
+
+Com o banco de dados de pé e rodando no Docker, use os comandos abaixo no seu terminal para baixar as dependências do Java e iniciar o servidor web:
+
+#### No Linux / Mac:
+
+```bash
 ./mvnw clean install
 ./mvnw spring-boot:run
-No Windows:
-Bash
+
+```
+
+#### No Windows:
+
+```bash
 mvnw.cmd clean install
 mvnw.cmd spring-boot:run
-(Nota: Se você tiver o Maven instalado globalmente nas variáveis de ambiente, pode substituir por mvn clean install e mvn spring-boot:run).
 
-A aplicação fará o build, executará as migrações automáticas de tabelas via Hibernate JPA (ddl-auto=update) e subirá por padrão no endereço:
-👉 http://localhost:8080
+```
+
+*(Nota: Se você tiver o Maven instalado globalmente nas variáveis de ambiente, pode substituir por `mvn clean install` e `mvn spring-boot:run`).*
+
+A aplicação fará o build, executará as migrações automáticas de tabelas via Hibernate JPA (`ddl-auto=update`) e subirá por padrão no endereço:
+
+👉 **http://localhost:8080**
+
 ---
 
 
 
+### 6) Problemas Comuns e Soluções
+
+* **Erro de Porta 8080 já em uso:**
+Abra o arquivo `src/main/resources/application.properties` e altere a porta da aplicação:
+```properties
+server.port=8081
+
+```
+
+
+* **Banco de dados não conecta:**
+Certifique-se de que o container do Docker subiu corretamente rodando o comando `docker ps`. Se a porta 5432 estiver ocupada por um PostgreSQL local da sua máquina, derrube o serviço local antes de rodar o `docker-compose up -d`.
+
 ---
+
+### 7) Encerrar a Aplicação e a Infraestrutura
+
+Para parar o servidor Spring Boot, vá até o terminal e pressione **Ctrl + C**.
+
+Para derrubar o container do banco de dados e limpar os recursos do Docker, execute o comando:
+
+```bash
+docker-compose down
+
+```
+
+```
+
+```
+---
+
+
+
+
 
 ## 💻 Stack Técnica Utilizada
 
