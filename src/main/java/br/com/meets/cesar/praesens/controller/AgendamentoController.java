@@ -2,12 +2,14 @@ package br.com.meets.cesar.praesens.controller;
 
 import br.com.meets.cesar.praesens.dto.AgendamentoInputDTO;
 import br.com.meets.cesar.praesens.model.AgendamentoModel;
+import br.com.meets.cesar.praesens.dto.PainelDTO;
 import br.com.meets.cesar.praesens.service.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/agendamentos")
@@ -36,4 +38,11 @@ public class AgendamentoController {
         public AgendamentoModel agendarPelaClinica(@RequestBody AgendamentoInputDTO dados) {
             return agendamentoService.salvar(dados, true);
         }
+
+    @GetMapping("/disponibilidade")
+    public ResponseEntity<List<PainelDTO>> consultarDisponibilidade(
+            @RequestParam("data") String data) {
+        LocalDate dataConsulta = LocalDate.parse(data);
+        return ResponseEntity.ok(agendamentoService.consultarDisponibilidade(dataConsulta));
+    }
 }

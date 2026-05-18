@@ -13,6 +13,18 @@ public class RiscoService {
     @Autowired
     private ExternalApiService apiService;
 
+    @Value("${risco.peso.clima:0.3}")
+    private double pesoClima;
+
+    @Value("${risco.peso.transito:0.3}")
+    private double pesoTransito;
+
+    @Value("${risco.peso.noShow.alto:0.4}")
+    private double pesoNoShowAlto;
+
+    @Value("${risco.peso.noShow.medio:0.2}")
+    private double pesoNoShowMedio;
+
     public ScoreOutputDTO analisarRisco(AgendamentoModel agendamento){
         String local = agendamento.getLocalidade();
         PacienteModel paciente = agendamento.getPaciente();
@@ -23,27 +35,29 @@ public class RiscoService {
 
         StringBuilder justificativa = new StringBuilder();
         double pontosRisco = 0;
+        double valorProcedimento = agendamento.getValor_Procedimento() != null ? agendamento.getValor_Procedimento() : 0.0;
 
         if(clima >= 0.7){
             justificativa.append("Condições climáticas desfavoráveis (chuva). ");
-            pontosRisco += 0.3;
+            pontosRisco += pesoClima;
         }
 
         if(transito >= 0.7){
             justificativa.append("Transito desfavoravel. ");
-            pontosRisco += 0.3;
+            pontosRisco += pesoTransito;
         }
 
-        if(paciente.getTotalAgendamentos()/paciente.getHistorico_NoShow() == 0.5 ){
+        if(paciente.getHistorico_NoShow() > 0 && paciente.getTotalAgendamentos() > 0 &&
+           ((double) paciente.getHistorico_NoShow() / paciente.getTotalAgendamentos()) >= 0.5 ){
             justificativa.append("Paciente com alto histórico de faltas. ");
-            pontosRisco += 0.4;
+            pontosRisco += pesoNoShowAlto;
         }
         else if(paciente.getHistorico_NoShow() > 0){
             justificativa.append("Paciente possui faltas anteriores. ");
-            pontosRisco += 0.2;
+            pontosRisco += pesoNoShowMedio;
         }
         
-        if (agendamento.getValor_Procedimento() > 1500.0) {
+        if (valorProcedimento > 1500.0) {
             justificativa.append("Procedimento de alto valor. ");
         }
 
@@ -54,7 +68,7 @@ public class RiscoService {
             nivelRisco = "ALTO";
             recomendacao = "Ligar para o paciente para confirmar presença assim que possível";
         }
-        else if(pontosRisco >= 0.3 || agendamento.getValor_Procedimento() > 1500.0){
+        else if(pontosRisco >= 0.3 || valorProcedimento > 1500.0){
             nivelRisco = "MEDIO";
             recomendacao = "Realizar confirmação da consulta via whatsapp";
         }
@@ -71,6 +85,10 @@ public class RiscoService {
         score.setJustificativa(justificativa.toString().trim());
         score.setRecomendacao(recomendacao);
         score.setNivelRisco(nivelRisco);
+        score.setDetalhesPesos(String.format(
+            "Pesos usados -> clima: %.2f, transito: %.2f, noShowAlto: %.2f, noShowMedio: %.2f",
+            pesoClima, pesoTransito, pesoNoShowAlto, pesoNoShowMedio
+        ));
         return score;
     }
 }

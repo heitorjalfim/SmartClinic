@@ -12,4 +12,5 @@ import java.util.*;
 public class PainelDTO {
     private LocalDate data;
     private List<LocalTime> horarioLivres;
+    private Double chairUtilization;
 }

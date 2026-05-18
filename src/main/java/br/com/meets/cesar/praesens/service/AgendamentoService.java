@@ -91,7 +91,11 @@ public class AgendamentoService {
         List<LocalTime> horasOcupadas = agendamentos.stream().map(agenda -> agenda.getHora()).toList();
         List<LocalTime> horasLivres = gradeFixa.stream().filter(horario -> !horasOcupadas.contains(horario)).toList();
 
-        cronograma.add(new PainelDTO(data, horasLivres));
+        int totalSlots = gradeFixa.size();
+        int slotsOcupados = horasOcupadas.size();
+        double chairUtilization = totalSlots == 0 ? 0.0 : ((double) slotsOcupados / totalSlots) * 100.0;
+
+        cronograma.add(new PainelDTO(data, horasLivres, chairUtilization));
         return cronograma;
     }
 
