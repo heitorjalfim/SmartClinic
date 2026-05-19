@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Clínica Innovare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 { text-align: center; margin: 0 0 28px 0; font-size: 1.4rem; }
+
+        label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.95rem; }
+
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            box-sizing: border-box;
+            color: #333;
+        }
+
+        input::placeholder { color: #aaa; }
+        input:focus { outline: none; border-color: #2979ff; }
+
+        #msg-erro { color: red; font-size: 0.9rem; margin-bottom: 12px; display: none; }
+
+        .btn-registrar {
+            width: 100%; padding: 13px; background-color: #2979ff;
+            color: white; border: none; border-radius: 6px;
+            font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px;
+        }
+
+        .btn-registrar:disabled { opacity: 0.7; cursor: default; }
+
+        .btn-voltar {
+            width: 100%; padding: 13px; background-color: #757575;
+            color: white; border: none; border-radius: 6px;
+            font-size: 1rem; font-weight: bold; cursor: pointer;
+            text-align: center; text-decoration: none;
+            display: block; box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Insira suas informações</h2>
+
+        <p id="msg-erro"></p>
+
+        <form id="form-login">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+
+            <button type="submit" class="btn-registrar" id="btn-submit">Registrar</button>
+        </form>
+
+        <a href="index.html" class="btn-voltar">Voltar</a>
+    </div>
+
+   <script>
+    const API = 'http://localhost:8080';
+
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const erro  = document.getElementById('msg-erro');
+        const btn   = document.getElementById('btn-submit');
+
+        erro.style.display = 'none';
+
+        if (!email) {
+            erro.textContent = 'Informe um e-mail.';
+            erro.style.display = 'block';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Aguarde...';
+
+        try {
+            const resp = await fetch(`${API}/api/agendamentos`);
+            if (!resp.ok) throw new Error();
+
+            const agendamentos = await resp.json();
+
+            const encontrado = agendamentos.find(a => a.paciente?.email === email);
+
+            if (!encontrado) throw new Error('not_found');
+
+            sessionStorage.setItem('emailPaciente', email);
+            window.location.href = 'perfilPessoal.html';
+
+        } catch (err) {
+            erro.textContent = 'E-mail não encontrado.';
+            erro.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Registrar';
+        }
+    });
+</script>
+</body>
+</html>
