@@ -16,7 +16,8 @@ import java.time.*;
 public class AgendamentoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID_Agendamento;
+    @Column(name = "id_agendamento")
+    private Long id;
 
     @ManyToOne
     @Setter private PacienteModel paciente;
@@ -30,6 +31,6 @@ public class AgendamentoModel {
     @Setter private Double Valor_Procedimento;
     @Setter private String status;
 
-    @Column(nullable = true)
-    @Setter private Double Probabilidade_Falta = 0.0;
+    @Column(name = "lead_time", nullable = false)
+    @Setter private Integer leadTime;
 }

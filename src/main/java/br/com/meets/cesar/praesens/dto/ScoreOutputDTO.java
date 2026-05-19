@@ -11,4 +11,5 @@ public class ScoreOutputDTO {
     private String nivelRisco;
     private String recomendacao; 
     private String justificativa;
+    private String detalhesPesos;
 }

@@ -9,10 +9,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID_Paciente;
-    
+    @Column(name = "id_paciente")
+    private Long id;
+
     @Email
     @Column(nullable = true)
     @Setter private String email;
