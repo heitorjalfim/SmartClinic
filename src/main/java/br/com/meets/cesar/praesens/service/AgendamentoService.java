@@ -40,6 +40,10 @@ public class AgendamentoService {
             return pacienteRepository.save(novoPaciente);
         });
 
+        //aumentar o número total de agendamentos
+        paciente.setTotalAgendamentos(paciente.getTotalAgendamentos()+1);
+        pacienteRepository.save(paciente);
+
         //calc do leadtime
         long diferencaDias = ChronoUnit.DAYS.between(LocalDate.now(), agendamento.getData());
         int leadTimeCalculado = (int) Math.max(diferencaDias, 0); 

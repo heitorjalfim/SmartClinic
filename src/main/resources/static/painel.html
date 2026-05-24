@@ -34,14 +34,7 @@
     <a href="menuFuncionarios.html" class="btn-voltar">← Voltar para o Menu de Funcionários</a>
 
     <div class="card">
-        <div class="header-menu">
-            <div>
-                <span>Início</span>
-                <span>Agendamentos</span>
-                <span>Pacientes</span>
-                <span>Relatórios</span>
-            </div>
-            <span>Login</span>
+        <div class="header">
         </div>
 
         <h2 id="titulo-data">Agenda do dia: carregando...</h2>
@@ -57,31 +50,11 @@
                 </tr>
             </thead>
             <tbody id="tabela-agendamentos">
-                <!-- Linhas inseridas pelo JS -->
+                
             </tbody>
         </table>
 
-        <div class="legenda-risco">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="border: none;"></th>
-                        <th style="border: none; font-weight: normal; font-size: 0.8rem;">Baixo</th>
-                        <th style="border: none; font-weight: normal; font-size: 0.8rem;">Mediano</th>
-                        <th style="border: none; font-weight: normal; font-size: 0.8rem;">Alto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="background-color: #e9ecef;">Nível de risco</td>
-                        <td>de 1% até 35%</td>
-                        <td>de 36% até 60%</td>
-                        <td>acima de 60%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    
 
     <script>
         const API = 'http://localhost:8080';
@@ -137,7 +110,7 @@
                             <td class="col-paciente">${nome}</td>
                             <td>${procedimento}</td>
                             <td>${prob}</td>
-                            <td><button class="btn-acao" onclick="confirmarAgendamento(${a.id_Agendamento})">Confirmar [x]</button></td>
+                            <td><button class="btn-acao" onclick="confirmarAgendamento(${a.id_Agendamento})">Marcar Falta[X]</button></td>
                         </tr>`;
                 });
 
