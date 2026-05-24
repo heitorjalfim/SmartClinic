@@ -19,6 +19,9 @@ public class PacienteModel {
     @Column(nullable = true)
     @Setter private String email;
 
+    @Column(unique = true)
+    @Setter private String cpf;
+
     @Setter private String nome;
 
     @Column(name = "historico_no_show", nullable = false)

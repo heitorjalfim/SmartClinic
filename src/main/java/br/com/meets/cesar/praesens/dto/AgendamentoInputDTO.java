@@ -9,8 +9,9 @@ public class AgendamentoInputDTO {
     @Email
     private String eMail;   
     private String nomePaciente;
+    private String cpf;
     private String localidade;    
-    private LocalTime Hora;
+    private LocalTime hora;
     private LocalDate data;
     private Double valor_procedimento;
     private String tipo_procedimento;
