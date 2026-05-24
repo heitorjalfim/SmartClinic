@@ -33,6 +33,7 @@ public class AgendamentoService {
             PacienteModel novoPaciente = new PacienteModel();
             novoPaciente.setEmail(agendamento.getEMail());
             novoPaciente.setNome(agendamento.getNomePaciente());
+            novoPaciente.setCpf(agendamento.getCpf());
             novoPaciente.setHistorico_NoShow(0);
             novoPaciente.setTotalAgendamentos(0);
             novoPaciente.setTelefone(agendamento.getTelefone());
