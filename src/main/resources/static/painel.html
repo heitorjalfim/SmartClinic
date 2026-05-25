@@ -37,11 +37,12 @@
         <div class="header">
         </div>
 
-        <h2 id="titulo-data">Agenda do dia: carregando...</h2>
+        <h2>Agendamentos</h2>
 
         <table>
             <thead>
                 <tr>
+                    <th>Data</th>
                     <th class="col-horario">Hora</th>
                     <th>Pacientes</th>
                     <th>Procedimento</th>
@@ -59,10 +60,7 @@
     <script>
         const API = 'http://localhost:8080';
 
-        // Mostra a data de hoje no título
-        const hoje = new Date().toLocaleDateString('pt-BR');
-        document.getElementById('titulo-data').textContent = `Agenda do dia: ${hoje}`;
-
+        
         async function getRisco(id) {
             try {
                 const res = await fetch(`${API}/api/risco/${id}`);
@@ -94,6 +92,10 @@
                 }
 
                 comRisco.forEach(a => {
+                    const data = a.data
+                    ? new Date(a.data + 'T00:00:00').toLocaleDateString('pt-BR')
+                    : '-';
+
                     const riscoTexto = a.risco?.nivelRisco ?? '-';
                     const prob = a.Probabilidade_Falta != null
                         ? `${(a.Probabilidade_Falta * 100).toFixed(0)}% (${riscoTexto})`
@@ -106,6 +108,7 @@
 
                     corpo.innerHTML += `
                         <tr>
+                            <td>${data}</td>
                             <td class="col-horario">${horario}</td>
                             <td class="col-paciente">${nome}</td>
                             <td>${procedimento}</td>
