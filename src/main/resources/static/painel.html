@@ -4,63 +4,93 @@
     <meta charset="UTF-8">
     <title>Painel Innovare - Gestão de Risco</title>
     <style>
-        :root {
-            --primary: #007bff;
-            --danger: #dc3545;
-            --success: #28a745;
-            --warning: #ffc107;
-            --dark: #212529;
-            --bg: #e5e5e5;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #333; color: #333;}
-        .card { background: var(--bg); padding: 0px 20px 20px 20px; margin-bottom: 30px; border: 2px solid #000; }
-        .header-menu { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding: 10px 0; margin-bottom: 20px; font-weight: bold;}
-        .header-menu span { margin-right: 15px; cursor: pointer;}
-        h2 { font-size: 1.2rem; font-weight: normal; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: var(--bg); border: 2px solid #000;}
-        th, td { border: 2px solid #000; padding: 8px; text-align: center; font-size: 0.9rem;}
-        th { background-color: #e9ecef; font-weight: normal; }
-        .col-horario { width: 60px; }
+        .btn-voltar {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        .btn-voltar:hover { text-decoration: underline; }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #222;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        th, td {
+            padding: 12px 14px;
+            text-align: center;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f7f7f7;
+            font-weight: 600;
+            color: #555;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #fafafa; }
         .col-paciente { text-align: left; }
-        .btn-acao { background-color: var(--bg); color: #333; border: none; cursor: pointer; text-decoration: none;}
-        .btn-acao:hover { text-decoration: underline; }
-        .legenda-risco { display: flex; justify-content: center; margin-top: 30px; width: 80%; margin-left: auto; margin-right: auto;}
-        .legenda-risco table { margin-top: 5px;}
-        .legenda-risco th, .legenda-risco td { padding: 5px; font-size: 0.8rem;}
-        .btn-voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #fff; font-weight: bold; }
+        .btn-acao {
+            background-color: #4a7fe5;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .btn-acao:hover { background-color: #3a6fd4; }
     </style>
 </head>
 <body>
-    <a href="menuFuncionarios.html" class="btn-voltar">← Voltar para o Menu de Funcionários</a>
+    <div style="max-width: 900px; margin: 0 auto;">
+        <a href="menuFuncionarios.html" class="btn-voltar">← Voltar para o Menu de Funcionários</a>
+    </div>
 
     <div class="card">
-        <div class="header">
-        </div>
-
         <h2>Agendamentos</h2>
-
         <table>
             <thead>
                 <tr>
                     <th>Data</th>
-                    <th class="col-horario">Hora</th>
+                    <th>Hora</th>
                     <th>Pacientes</th>
                     <th>Procedimento</th>
                     <th>Risco de falta</th>
                     <th>Ações rápidas</th>
                 </tr>
             </thead>
-            <tbody id="tabela-agendamentos">
-                
-            </tbody>
+            <tbody id="tabela-agendamentos"></tbody>
         </table>
-
-    
+    </div>
 
     <script>
         const API = 'http://localhost:8080';
 
-        
         async function getRisco(id) {
             try {
                 const res = await fetch(`${API}/api/risco/${id}`);
@@ -71,7 +101,7 @@
 
         async function carregarPainel() {
             const corpo = document.getElementById('tabela-agendamentos');
-            corpo.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
+            corpo.innerHTML = '<tr><td colspan="6">Carregando...</td></tr>';
 
             try {
                 const res = await fetch(`${API}/api/agendamentos`);
@@ -79,7 +109,7 @@
 
                 const comRisco = await Promise.all(
                     agendamentos.map(async (a) => {
-                        const risco = await getRisco(a.id_Agendamento);
+                        const risco = await getRisco(a.id);
                         return { ...a, risco };
                     })
                 );
@@ -87,38 +117,35 @@
                 corpo.innerHTML = '';
 
                 if (comRisco.length === 0) {
-                    corpo.innerHTML = '<tr><td colspan="5">Nenhum agendamento encontrado.</td></tr>';
+                    corpo.innerHTML = '<tr><td colspan="6">Nenhum agendamento encontrado.</td></tr>';
                     return;
                 }
 
                 comRisco.forEach(a => {
                     const data = a.data
-                    ? new Date(a.data + 'T00:00:00').toLocaleDateString('pt-BR')
-                    : '-';
-
+                        ? new Date(a.data + 'T00:00:00').toLocaleDateString('pt-BR')
+                        : '-';
                     const riscoTexto = a.risco?.nivelRisco ?? '-';
                     const prob = a.Probabilidade_Falta != null
                         ? `${(a.Probabilidade_Falta * 100).toFixed(0)}% (${riscoTexto})`
                         : riscoTexto;
-
                     const horario = a.hora ?? '-';
                     const nome = a.paciente?.nome ?? '-';
                     const procedimento = a.Tipo_Procedimento ?? '?';
 
-
                     corpo.innerHTML += `
                         <tr>
                             <td>${data}</td>
-                            <td class="col-horario">${horario}</td>
+                            <td>${horario}</td>
                             <td class="col-paciente">${nome}</td>
                             <td>${procedimento}</td>
                             <td>${prob}</td>
-                            <td><button class="btn-acao" onclick="confirmarAgendamento(${a.id_Agendamento})">Marcar Falta[X]</button></td>
+                            <td><button class="btn-acao" onclick="confirmarAgendamento(${a.id})">Marcar Falta</button></td>
                         </tr>`;
                 });
 
             } catch (err) {
-                corpo.innerHTML = '<tr><td colspan="5">Erro ao carregar agendamentos.</td></tr>';
+                corpo.innerHTML = '<tr><td colspan="6">Erro ao carregar agendamentos.</td></tr>';
                 console.error(err);
             }
         }
@@ -126,10 +153,10 @@
         async function confirmarAgendamento(id) {
             const res = await fetch(`${API}/api/agendamentos/${id}/falta`, { method: 'PATCH' });
             if (res.ok) {
-                alert('Agendamento confirmado!');
+                alert('Falta registrada com sucesso!');
                 carregarPainel();
             } else {
-                alert('Erro ao confirmar.');
+                alert('Erro ao registrar falta.');
             }
         }
 
