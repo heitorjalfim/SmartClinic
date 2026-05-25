@@ -31,7 +31,6 @@ public class RiscoService {
         ScoreOutputDTO score = new ScoreOutputDTO();
 
         float clima = apiService.getClima(local, agendamento.getHora(), agendamento.getData());
-        float transito = apiService.getTransito(local, agendamento.getHora(), agendamento.getData());
 
         StringBuilder justificativa = new StringBuilder();
         double pontosRisco = 0;
@@ -40,11 +39,6 @@ public class RiscoService {
         if(clima >= 0.7){
             justificativa.append("Condições climáticas desfavoráveis (chuva). ");
             pontosRisco += pesoClima;
-        }
-
-        if(transito >= 0.7){
-            justificativa.append("Transito desfavoravel. ");
-            pontosRisco += pesoTransito;
         }
 
         if(paciente.getHistorico_NoShow() > 0 && paciente.getTotalAgendamentos() > 0 &&

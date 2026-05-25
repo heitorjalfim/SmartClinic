@@ -84,6 +84,14 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 🔍 Como testar localmente:
 `http://localhost:8080/api/agendamentos/disponibilidade?data=2026-05-19` *(Substitua pela data do agendamento de teste e observe o percentual atualizado)*.
 
+<<<<<<< HEAD
+=======
+## 🎥 Screencast (Demonstração)
+* **Link do Vídeo:** (https://youtu.be/8t4Xd_CsaEY)
+* *Nota: O vídeo demonstra o consumo dos pesos dinâmicos na API de Risco (H9), o cálculo em tempo real da ocupação no endpoint de disponibilidade (H12), conforme documentado no README.*
+--
+
+>>>>>>> f51e9203fa18db3578385efc49ddf767f256b0b6
 
 
 
@@ -97,10 +105,13 @@ Nesta etapa, o foco foi a construção da infraestrutura técnica e a persistên
 
 ---
 
+<<<<<<< HEAD
 ### 🎥 Screencast (Demonstração)
 
 * **Link do Vídeo:** ([Insira_o_link_do_YouTube_Aqui](https://youtu.be/...))
 * *Nota: O vídeo demonstra o consumo dos pesos dinâmicos na API de Risco (H9), o cálculo em tempo real da ocupação no endpoint de disponibilidade (H12), conforme documentado no README.*
+=======
+>>>>>>> f51e9203fa18db3578385efc49ddf767f256b0b6
 
 
 # Documentação de Instalação e Execução — Praesens Meets Intelligence

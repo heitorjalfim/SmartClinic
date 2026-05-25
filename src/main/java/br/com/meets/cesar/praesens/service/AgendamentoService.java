@@ -42,6 +42,9 @@ public class AgendamentoService {
         long diferencaDias = ChronoUnit.DAYS.between(LocalDate.now(), agendamento.getData());
         int leadTimeCalculado = (int) Math.max(diferencaDias, 0); 
 
+        paciente.setTotalAgendamentos(paciente.getTotalAgendamentos()+1);
+        pacienteRepository.save(paciente);
+
         AgendamentoModel novoAgendamento = new AgendamentoModel();
         novoAgendamento.setLocalidade(agendamento.getLocalidade());
         novoAgendamento.setHora(agendamento.getHora());

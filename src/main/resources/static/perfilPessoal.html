@@ -2,168 +2,131 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Clínica Innovare - Perfil Pessoal Cliente</title>
+    <title>Perfil Pessoal</title>
     <style>
-        /* Estilos baseados no wireframe da imagem e no padrão do seu projeto */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #d3d3d3; /* Fundo cinza do mockup */
-            margin: 0; 
-            padding: 40px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .btn-voltar { 
-            align-self: flex-start;
-            margin-bottom: 20px; 
-            text-decoration: none; 
-            color: #007bff; 
-            font-weight: bold; 
-        }
-
-        .main-container {
+        body {
+            font-family: Arial, sans-serif;
             display: flex;
-            gap: 50px;
-            width: 100%;
-            max-width: 900px;
-            margin-top: 20px;
-        }
-
-        /* Coluna da Esquerda (Foto e Honra) */
-        .left-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 250px;
-        }
-
-        .foto-placeholder {
-            width: 200px;
-            height: 150px;
-            border: 2px solid black;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            position: relative;
-            background-color: transparent;
-        }
-
-        /* Pequenos traços nos cantos para imitar o ícone de imagem do mockup */
-        .foto-placeholder::before, .foto-placeholder::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 2px;
-            background-color: black;
-        }
-        .foto-placeholder::before { top: 20px; left: 20px; transform: rotate(45deg); }
-        .foto-placeholder::after { bottom: 20px; right: 20px; transform: rotate(45deg); }
-
-
-        .honra-status {
-            margin: 20px 0 10px 0;
-            font-size: 1.5rem;
-        }
-
-        .honra-valor {
-            color: #d32f2f; /* Cor vermelha de exemplo, pode ser alterada via JS depois */
-            font-weight: bold;
-        }
-
-        .historico-box {
-            width: 100%;
-            height: 250px;
-            border: 2px solid black;
-            padding: 10px;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            padding: 30px 16px;
             box-sizing: border-box;
         }
 
-        /* Coluna da Direita (Dados Pessoais) */
-        .right-column {
-            flex: 1;
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
         }
 
-        .dados-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+        h2 { text-align: center; margin: 0 0 28px 0; font-size: 1.4rem; }
+
+        label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.95rem; }
+
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            box-sizing: border-box;
+            color: #333;
+            background: #fff;
         }
 
-        .dados-box {
-            border: 2px solid black;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .btn-voltar {
+            width: 100%; padding: 13px; background-color: #757575;
+            color: white; border: none; border-radius: 6px;
+            font-size: 1rem; font-weight: bold; cursor: pointer;
+            text-align: center; text-decoration: none;
+            display: block; box-sizing: border-box; margin-top: 8px;
         }
 
-        .form-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group label {
-            width: 80px; 
-            font-size: 1.1rem;
-        }
-
-        .form-group input {
-            flex: 1;
-            padding: 8px;
-            border: 2px solid black;
-            background-color: #e0e0e0;
-            font-size: 1rem;
-            outline: none;
-        }
+        #msg-erro { color: red; font-size: 0.9rem; margin-bottom: 16px; display: none; }
     </style>
 </head>
 <body>
-    
-    <a href="menuClientes.html" class="btn-voltar">← Voltar para o Menu</a>
-    
-    <div class="main-container">
-        
-        <div class="left-column">
-            <div class="foto-placeholder">
-                Foto da cliente
-            </div>
-            
-            <div class="honra-status">
-                Honra = <span class="honra-valor" id="status-honra">Baixa</span>
-            </div>
-            
-            <div class="historico-box" id="historico-honra">
-                
-            </div>
-        </div>
+<div class="container">
+    <h2>Perfil Pessoal</h2>
 
-        <div class="right-column">
-            <div class="dados-title">Dados Pessoais:</div>
-            
-            <div class="dados-box">
-                <div class="form-group">
-                    <label>Nome:</label>
-                    <input type="text" id="nome" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Email:</label>
-                    <input type="email" id="email" readonly>
-                </div>
-                <div class="form-group">
-                    <label>CPF:</label>
-                    <input type="text" id="cpf" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Telefone:</label>
-                    <input type="text" id="telefone" readonly>
-                </div>
-            </div>
-        </div>
+    <p id="msg-erro">Paciente não encontrado.</p>
 
-    </div>
+    <label>Nome:</label>
+    <input type="text" id="d-nome" readonly>
 
+    <label>Email:</label>
+    <input type="email" id="d-email" readonly>
+
+    <label>Telefone:</label>
+    <input type="text" id="d-telefone" readonly>
+
+    <label>Score de Honra:</label>
+    <input type="text" id="d-score" readonly>
+
+    <label>Total de Agendamentos:</label>
+    <input type="text" id="d-total" readonly>
+
+    <label>No-shows:</label>
+    <input type="text" id="d-noshow" readonly>
+
+    <a href="perfilLogin.html" class="btn-voltar" id="btn-voltar">Voltar</a>
+</div>
+
+    <script>
+        const API = 'http://localhost:8080';
+
+        function formatarTelefone(tel) {
+            if (!tel) return '—';
+            const d = tel.replace(/\D/g, '');
+            if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+            if (d.length === 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+            return tel;
+        }
+
+        async function carregarPerfil() {
+            const email = sessionStorage.getItem('emailPaciente');
+
+            if (!email) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const resp = await fetch(`${API}/api/agendamentos`);
+                if (!resp.ok) throw new Error();
+
+                const agendamentos = await resp.json();
+
+                const encontrado = agendamentos.find(a => a.paciente?.email === email);
+
+                if (!encontrado) throw new Error('not_found');
+
+                const p = encontrado.paciente;
+
+                document.getElementById('d-nome').value     = p.nome      || '—';
+                document.getElementById('d-email').value    = p.email     || '—';
+                document.getElementById('d-telefone').value = formatarTelefone(p.telefone || '');
+                document.getElementById('d-score').value    = (p.Score_Honra ?? 100) + ' / 100';
+                document.getElementById('d-total').value    = p.totalAgendamentos ?? 0;
+                document.getElementById('d-noshow').value   = p.Historico_NoShow ?? 0;
+
+            } catch {
+                document.getElementById('msg-erro').style.display = 'block';
+            }
+        }
+
+        document.getElementById('btn-voltar').addEventListener('click', () => {
+            sessionStorage.removeItem('emailPaciente');
+        });
+
+        carregarPerfil();
+    </script>
 </body>
 </html>
