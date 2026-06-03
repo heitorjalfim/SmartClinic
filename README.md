@@ -1,4 +1,4 @@
-# Meets-praesens
+# SmartClinic API
 
 > **Status:** 🚀 Projeto concluído!
 
