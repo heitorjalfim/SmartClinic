@@ -1,6 +1,6 @@
 # Meets-praesens
 
-> **Status:** 🚀 Entrega 2 Concluída | API & Banco de Dados Integrados
+> **Status:** 🚀 Projeto concluído!
 
 Sistema para gestão de presença e monitoramento de agendamentos, desenvolvido com foco em arquitetura robusta e documentação clara.
 
